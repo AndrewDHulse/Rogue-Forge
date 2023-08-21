@@ -1,26 +1,25 @@
-const mongoose = require()
-
-const fieldSchema = new mongoose.Schema({
-    label: {
-        type: String,
-        required: true,
-    },
-    type: {
-        type: String,
-        required: true,
-        enum: ['text', 'number', 'checkbox', 'dropdown'], // Possible field types
-    },
-    value: {
-        type: mongoose.Schema.Types.Mixed, //??????????? maybe?
-    },
-});
+const mongoose = require('mongoose');
 
 const characterSheetSchema = new mongoose.Schema({
-    userId: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
     },
-    fields: [fieldSchema], // Array of field objects
+    template: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'CharacterSheetTemplate',
+        required: true,
+    },
+    values: [{ 
+        field: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'CharacterSheetTemplate.fields' // Reference to the fields within the template
+        },
+        value: {
+            type: mongoose.Schema.Types.Mixed
+        }
+    }],
 });
 
+module.exports = mongoose.model('CharacterSheet', characterSheetSchema);
