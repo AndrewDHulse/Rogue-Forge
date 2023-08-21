@@ -1,6 +1,10 @@
 import WhiteBoard from '../../components/WhiteBoard/WhiteBoard'
-export default function SessionTable(){
+import DiceRoller from '../../components/DiceRoller/DiceRoller';
+export default function SessionTable(user){
     return(
-        < WhiteBoard />
+        <>
+            < WhiteBoard />
+            < DiceRoller user={user}/>
+        </>
     );
 }

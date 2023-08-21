@@ -1,4 +1,6 @@
 import { useState, useRef } from "react"
+import './WhiteBoard.css'
+
 
 export default function WhiteBoard(){
     const canvasRef = useRef(null);
@@ -57,7 +59,7 @@ export default function WhiteBoard(){
 
     return (
         <div>
-            <canvas
+            <canvas className="canvas"
                 ref={canvasRef}
                 width={500}
                 height={500}

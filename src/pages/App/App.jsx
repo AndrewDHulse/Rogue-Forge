@@ -6,7 +6,6 @@ import AuthPage from '../AuthPage/AuthPage'
 import NewSessionPage from '../../pages/NewSessionPage/NewSessionPage'
 import NavBar from '../../components/NavBar/NavBar'
 import SessionTable from '../SessionTable/SessionTable';
-import WhiteBoard from '../../components/WhiteBoard/WhiteBoard'
 
 export default function App() {
   const [user, setUser] = useState(getUser());
@@ -18,7 +17,7 @@ export default function App() {
         <NavBar user={user} setUser={setUser} />
         <Routes>
           <Route path="sessions/new" element={ < NewSessionPage/> }/>
-          <Route path = 'sessions/table' element={< SessionTable/>}/>
+          <Route path = 'sessions/table' element={< SessionTable/>} user={user}/>
         </Routes>
       </>
       :
