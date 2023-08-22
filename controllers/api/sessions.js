@@ -6,6 +6,7 @@ const Template = require ('../../models/characterSheetTemplate')
 module.exports = {
     create,
     index,
+    show,
 }
 
 async function create(req, res){
@@ -22,6 +23,15 @@ async function index(req, res){
     try{
         const sessions= await Session.find({})
         res.json(sessions)
+    }catch(err){
+        console.log(err)
+    }
+}
+
+async function show(req, res){
+    try{
+        const session = await Session.findById(req.params.id);
+        res.json(session);
     }catch(err){
         console.log(err)
     }

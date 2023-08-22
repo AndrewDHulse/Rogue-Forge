@@ -8,3 +8,7 @@ export async function createSession(sessionData){
 export async function getAllSessions(){
     return sendRequest(`${BASE_URL}/index`, 'GET');
 }  
+
+export async function getById(id){
+    return sendRequest(`${BASE_URL}/details/${id}`);
+}

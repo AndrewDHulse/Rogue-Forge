@@ -47,3 +47,8 @@ export function checkToken() {
     return usersAPI.checkToken()
         .then(dateStr => new Date(dateStr));
 }
+
+export function findUserNameById(users, userId) {
+    const user = users.find(user => user._id === userId);
+    return user ? user.name : "Adventurer";
+}

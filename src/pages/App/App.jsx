@@ -8,6 +8,7 @@ import NavBar from '../../components/NavBar/NavBar'
 import SessionTable from '../SessionTable/SessionTable';
 import NewSessionPage from '../../pages/NewSessionPage/NewSessionPage'
 import SessionIndex from '../../pages/SessionIndex/SessionIndex'
+import SessionDetailPage from '../SessionDetailPage/SessionDetailPage';
 
 export default function App() {
   const [user, setUser] = useState(getUser());
@@ -35,6 +36,7 @@ export default function App() {
           <Route path="sessions/new" element={ < NewSessionPage/> }/>
           <Route path = 'sessions/table' element={< SessionTable user={user} />}/>
           <Route path="sessions/index" element={<SessionIndex sessions={sessions} />}  />
+          <Route path="sessions/details/:sessionId" element={<SessionDetailPage sessions={sessions} user={user} />} />
         </Routes>
       </>
       :
