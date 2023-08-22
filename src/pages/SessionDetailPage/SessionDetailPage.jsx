@@ -5,11 +5,17 @@ import { getAllUsers } from "../../utilities/users-api";
 import { findUserNameById } from "../../utilities/users-service";
 import WhiteBoard from "../../components/WhiteBoard/WhiteBoard";
 import DiceRoller from "../../components/DiceRoller/DiceRoller";
+import CharacterSheetTemplateForm from "../../components/CharacterSheetTemplateForm/CharacterSheetTemplateForm";
 
-export default function SessionDetailPage({ user }) {
+export default function SessionDetailPage({ user, sessions }) {
     const { sessionId } = useParams();
     const [session, setSession] = useState(null);
     const [users, setUsers] = useState([])
+    const [showTemplateForm, setShowTemplateForm] = useState(false);
+
+    const toggleTemplateForm=()=>{
+        setShowTemplateForm((prevValue) => !prevValue)
+    }
 
     useEffect(() => {
         async function fetchSessionDetails() {
@@ -29,18 +35,28 @@ export default function SessionDetailPage({ user }) {
     }, [sessionId]);
 
     return (
-        <div>
+        <>
         {session ? (
-            <>
+        <>
             <h1>{session.campaignName}'s detail page</h1>
-                <p>Game Master: {findUserNameById(users, session.DM)}</p>
-                < WhiteBoard />
-                < DiceRoller user={user}/>
-                
-                </>
+            <p>Game Master: {findUserNameById(users, session.DM)}</p>
+            
+            {/* {user.role === "DM" && (
+                <button onClick={toggleTemplateForm}>
+                    Create Character Sheet Template
+                </button>
+            )}
+            
+            {showTemplateForm && (
+                <CharacterSheetTemplateForm sessionId={sessionId} />
+            )} */}
+            <CharacterSheetTemplateForm sessionId={sessionId} />
+            <WhiteBoard />
+            <DiceRoller user={user} />
+        </>
         ) : (
-            <p>Loading...</p>
+        <p>Loading...</p>
         )}
-        </div>
+        </>
     );
 }

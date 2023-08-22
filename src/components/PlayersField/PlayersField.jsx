@@ -9,7 +9,8 @@ export default function PlayersField({ value, onChange }) {
         async function fetchAllUsers() {
             try {
             const users = await usersAPI.getAllUsers();
-            setAllUsers(users);
+            const playersOnly = users.filter(user => user.role === 'Player');
+            setAllUsers(playersOnly);
             } catch (error) {
             console.error(error);
             }

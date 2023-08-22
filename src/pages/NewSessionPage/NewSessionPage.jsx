@@ -12,10 +12,10 @@ export default function NewSessionPage(){
     const currentUser= getUser()
     const [currentField, setCurrentField]=useState(0);
     const [sessionData, setSessionData] = useState({
-        sessionName: '',
-        game: '',
+        campaignName: '',
+        system: '',
         DM: getUser(),
-        players:[]
+        players:null,
     })
 
     const formFields=[
@@ -49,7 +49,7 @@ export default function NewSessionPage(){
     function handleFieldChange(field, value){
         setSessionData((prevData)=> ({
             ...prevData,
-            [field]: value,
+            [field]: value === null ? undefined : value,
         }))
     }
 
