@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function DiceRoller({ user }) {
+    console.log(' user passed to diceroller component',user)
     const Roll = {
         D4: () => Math.floor(Math.random() * 4) + 1,
         D6: () => Math.floor(Math.random() * 6) + 1,
@@ -16,6 +17,8 @@ export default function DiceRoller({ user }) {
     const [selectedDice, setSelectedDice] = useState(diceOptions[0]); 
     const [rollQuantity, setRollQuantity] = useState(1);
     const [totalRoll, setTotalRoll] = useState(0);
+    const [diceRolled, setDiceRolled] = useState(false)
+    const [rollingUser, setRollingUser] = useState(null);
 
     const handleRoll = (evt) => {
         evt.preventDefault();
@@ -24,8 +27,16 @@ export default function DiceRoller({ user }) {
             sum += Roll[selectedDice]();
         }
         setTotalRoll(sum);
+        setDiceRolled(true);
+        console.log('user.name before setting rollingUser', user.name)
+        setRollingUser(user.name);
     };
 
+    useEffect(() => {
+        console.log("Updated rollingUser:", rollingUser);
+    }, [rollingUser]);
+
+    
     return (
         <div>
             <form id="diceRoll">
@@ -50,10 +61,14 @@ export default function DiceRoller({ user }) {
                 <button id="diceRollButton" onClick={handleRoll}>
                     Roll Em
                 </button>
+            {diceRolled && (
+                <h1 id="rollOutput">
+                    {console.log('user in h1', user)}
+                    {console.log('rollinguser in h1', rollingUser)}
+                    Result for {rollQuantity} {selectedDice}: {totalRoll}
+                </h1>
+            )}
             </form>
-            <h1 id="rollOutput">
-                Total result for {rollQuantity} {selectedDice}: {totalRoll}
-            </h1>
         </div>
     );
 }

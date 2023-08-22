@@ -5,6 +5,6 @@ export async function createSession(sessionData){
     return sendRequest(`${BASE_URL}/new`, 'POST', sessionData)
 }
 
-export async function getAll(){
-    return sendRequest(BASE_URL);
+export async function getAllSessions(){
+    return sendRequest(`${BASE_URL}/index`, 'GET');
 }  
