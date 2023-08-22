@@ -17,6 +17,8 @@ app.use(require('./config/checkToken'));
 const port = process.env.PORT || 3001;
 
 app.use('/api/users', require('./routes/api/users'));
+app.use('/api/sessions', require('./routes/api/sessions'))
+
 
 //Catch All
 app.get('/*', function(req, res) {

@@ -12,9 +12,13 @@ const sessionSchema = new Schema({
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'User',
         }],
-        name:{
+        campaignName:{
                 type: String,
                 required: true,   
+        },
+        system:{
+                type: String,
+                required: true,
         },
         characterSheets:[{
                 type: mongoose.Schema.Types.ObjectId, 
