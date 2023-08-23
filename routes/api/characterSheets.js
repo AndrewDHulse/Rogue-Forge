@@ -3,6 +3,7 @@ const router = express.Router();
 const characterSheetCtrl=require('../../controllers/api/characterSheets')
 
 
-router.post('/createTemplate', characterSheetCtrl.createTemplate)
+router.post('/createTemplate/:sessionId', characterSheetCtrl.createTemplate);
+
 
 module.exports = router

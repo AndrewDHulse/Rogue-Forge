@@ -11,17 +11,20 @@ export default function CharacterSheetTemplateForm({ sessionId }){
 
     const handleAddField=()=>{
         setFields([...fields, {label: '', type: 'text', dropdownOptions: ['separate options with commas']}]);
+        console.log('Fields after adding:', fields)
     };
     
     const handleFieldChange = (index, updatedField)=> {
         const updatedFields = [...fields];
         updatedFields[index] = updatedField;
         setFields(updatedFields);
+        console.log('Fields after updating:', fields)
     };
 
     const handleSubmit = async (evt) =>{
         evt.preventDefault();
         try{
+            console.log('Fields being sent to createTemplate:', fields);
             await createTemplate(sessionId, fields);
         }catch(err){
             console.log(err)
