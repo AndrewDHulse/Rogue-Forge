@@ -20,14 +20,16 @@ export default function CharacterSheetField({index, field, onChange}){
                 <option value='checkbox'>checkbox</option>
                 <option value='dropdown'>dropdown</option>
             </select>
-            {field.type === 'dropdown' &&(
+            {field.type === 'dropdown' && (
+                <>
                 <input
                     type='text'
-                    value={field.dropdownOptions}
-                    onChange={evt=>
-                        handleFieldChange('dropdownOptions', evt.target.value)
+                    value={field.dropdownOptions ? field.dropdownOptions.join(', ') : ''}
+                    onChange={(evt) =>
+                        handleFieldChange('dropdownOptions', evt.target.value.split(', '))
                     }
                 />
+                </>
             )}
         </>
     )
