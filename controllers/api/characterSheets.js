@@ -13,6 +13,7 @@ async function createTemplate(req, res) {
         const templateData = {
             session: session._id,
             fields: req.body.fields,
+            templateName: req.body.templateName
         };
         const createdTemplate = await characterSheetTemplate.create(templateData);
         res.json(createdTemplate);

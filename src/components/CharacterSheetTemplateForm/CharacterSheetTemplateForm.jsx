@@ -8,6 +8,7 @@ import TextField from "../TextField/TextField";
 
 export default function CharacterSheetTemplateForm({ sessionId }){
     const [fields, setFields] = useState([]);
+    const [templateName, setTemplateName] = useState('');
 
     const handleAddField=()=>{
         setFields([...fields, {label: '', type: 'text', dropdownOptions: ['separate options with commas']}]);
@@ -21,11 +22,18 @@ export default function CharacterSheetTemplateForm({ sessionId }){
         console.log('Fields after updating:', fields)
     };
 
+    const handleTemplateNameChange = (evt) => {
+        setTemplateName(evt.target.value);
+    };
+
     const handleSubmit = async (evt) =>{
         evt.preventDefault();
-        try{
-            console.log('Fields being sent to createTemplate:', fields);
-            await createTemplate(sessionId, fields);
+        try {
+            const templateData = {
+                templateName: templateName, 
+                fields: fields,
+            };
+            await createTemplate(sessionId, templateData);
         }catch(err){
             console.log(err)
         }
@@ -34,6 +42,15 @@ export default function CharacterSheetTemplateForm({ sessionId }){
     return(
         <>
             <form onSubmit={handleSubmit}>
+                <label>
+                    Template Name: 
+                    <input
+                        type="text"
+                        value={templateName}
+                        onChange={handleTemplateNameChange}
+                        required
+                    />
+                </label>
                 {fields.map((field, index) =>(
                     <div key={index} style={{ marginBottom: "10px" }}>
                     <CharacterSheetField 

@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const characterSheetSchema = new mongoose.Schema({
+    characterName:{
+        type: String,
+        required: true,
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

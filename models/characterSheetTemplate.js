@@ -13,6 +13,10 @@ const fieldSchema = new mongoose.Schema({
 });
 
 const characterSheetTemplateSchema = new mongoose.Schema({
+    templateName:{
+        type: String,
+        required: true,
+    },
     session: { 
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Session',
