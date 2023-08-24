@@ -18,3 +18,7 @@ export async function showTemplate(templateId){
 export async function showTemplatesForSession(sessionId) {
     return sendRequest(`${BASE_URL}/showTemplatesForSession/${sessionId}`, 'GET')
 }
+
+export async function showCharacterSheetsforUser(userId){
+    return sendRequest(`${BASE_URL}/showCharacterSheets/${userId}`, 'GET')
+}

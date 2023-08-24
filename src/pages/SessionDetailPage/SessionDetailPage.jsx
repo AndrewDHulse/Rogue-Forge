@@ -52,14 +52,16 @@ export default function SessionDetailPage({ user, sessions }) {
 
     const handleCreateCharacterSheet = async (templateId) => {
         try {
-            await createCharacterSheet(templateId,  formData );
+            console.log("Creating character sheet...");
+            await createCharacterSheet(templateId, formData);
+            console.log("Character sheet created");
             const updatedTemplates = await showTemplatesForSession(sessionId);
+            console.log("Fetching updated templates");
             setTemplates(updatedTemplates);
         } catch (err) {
             console.log('Error creating character sheet', err);
         }
-        };
-
+    };
 
     return (
         <>
@@ -78,12 +80,16 @@ export default function SessionDetailPage({ user, sessions }) {
                 <CharacterSheetTemplateForm sessionId={sessionId} />
             )} */}
             <CharacterSheetTemplateForm sessionId={sessionId} />
-            <CharacterSheetTemplate
-            templates={templates}
-            handleCreateCharacterSheet={handleCreateCharacterSheet}
-            formData={formData}
-            handleChange={handleChange}
-        />
+            {templates.map((template, index) => (
+                    <CharacterSheetTemplate
+                        key={template._id}
+                        template={template}
+                        handleCreateCharacterSheet={handleCreateCharacterSheet}
+                        formData={template.formData}
+                        handleChange={handleChange}
+                        sessionId={sessionId}
+                    />
+                ))}
             <WhiteBoard />
             <DiceRoller user={user} />
         </>

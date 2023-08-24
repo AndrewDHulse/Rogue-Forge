@@ -7,7 +7,8 @@ module.exports={
     createTemplate,
     showTemplate,
     createCharacterSheet,
-    showTemplatesForSession
+    showTemplatesForSession,
+    showCharacterSheetsforUser
 }
 
 async function createTemplate(req, res) {
@@ -73,10 +74,24 @@ async function showTemplatesForSession(req, res) {
     try {
         const sessionId = req.params.sessionId;
         const templates = await characterSheetTemplate.find({ session: sessionId });
-
-        res.json(templates);
+        const templatesWithData = templates.map(template => ({
+            ...template.toObject(),
+            formData: { characterName: '' } 
+        }));
+        res.json(templatesWithData);
     } catch (err) {
         console.log(err);
         res.status(500).json({ err: 'Error while fetching templates' });
+    }
+}
+
+async function showCharacterSheetsforUser(req, res){
+    try{
+        const userId=req.user._id;
+        const characterSheets = await CharacterSheet.find({user : userId}).populate('template')
+        res.json(characterSheets)
+    }catch(err){
+        console.log(err);
+        res.status(500).json({err: 'error while fetching Character Sheets'})
     }
 }
