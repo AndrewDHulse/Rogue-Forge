@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
 export default function DiceRoller({ user }) {
-    console.log(' user passed to diceroller component',user)
     const Roll = {
         D4: () => Math.floor(Math.random() * 4) + 1,
         D6: () => Math.floor(Math.random() * 6) + 1,
@@ -28,12 +27,10 @@ export default function DiceRoller({ user }) {
         }
         setTotalRoll(sum);
         setDiceRolled(true);
-        console.log('user.name before setting rollingUser', user.name)
         setRollingUser(user.name);
     };
 
     useEffect(() => {
-        console.log("Updated rollingUser:", rollingUser);
     }, [rollingUser]);
 
     
@@ -63,8 +60,6 @@ export default function DiceRoller({ user }) {
                 </button>
             {diceRolled && (
                 <h1 id="rollOutput">
-                    {console.log('user in h1', user)}
-                    {console.log('rollinguser in h1', rollingUser)}
                     Result for {rollQuantity} {selectedDice}: {totalRoll}
                 </h1>
             )}

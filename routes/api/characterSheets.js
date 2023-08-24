@@ -4,6 +4,7 @@ const characterSheetCtrl=require('../../controllers/api/characterSheets')
 
 
 router.post('/createTemplate/:sessionId', characterSheetCtrl.createTemplate);
-
-
+router.get('/showTemplate/:templateId', characterSheetCtrl.showTemplate);
+router.post('/createSheet/:templateId', characterSheetCtrl.createCharacterSheet);
+router.get('/showTemplatesForSession/:sessionId', characterSheetCtrl.showTemplatesForSession);
 module.exports = router
