@@ -2,6 +2,7 @@ const User = require('../../models/user')
 const Session = require('../../models/session')
 const CharacterSheet = require('../../models/characterSheet')
 const characterSheetTemplate = require('../../models/characterSheetTemplate')
+const characterSheet = require('../../models/characterSheet')
 
 module.exports={
     createTemplate,
@@ -89,7 +90,16 @@ async function showCharacterSheetsforUser(req, res){
     try{
         const userId=req.user._id;
         const characterSheets = await CharacterSheet.find({user : userId}).populate('template')
-        res.json(characterSheets)
+        const characterSheetsWithData = characterSheets.map((characterSheet)=>{
+            const formData={
+                characterName: characterSheet.characterName,
+            };
+            return{
+                ...characterSheet.toObject(),
+                formData: formData
+            }
+        })
+        res.json(characterSheetsWithData)
     }catch(err){
         console.log(err);
         res.status(500).json({err: 'error while fetching Character Sheets'})

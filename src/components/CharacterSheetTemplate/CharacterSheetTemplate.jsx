@@ -30,7 +30,11 @@ export default function CharacterSheetTemplate({
                         )}
                         {field.type === "dropdown" && (
                             <select id={field._id}>
-                                <option value="">fix this later</option>
+                                {field.options.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
                             </select>
                         )}
                     </div>

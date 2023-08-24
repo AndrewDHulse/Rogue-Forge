@@ -1,21 +1,30 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
 import { getById } from "../../utilities/sessions-api";
 import { getAllUsers } from "../../utilities/users-api";
 import { findUserNameById } from "../../utilities/users-service";
-import { showTemplatesForSession, createCharacterSheet } from "../../utilities/characterSheets-api";
+import { 
+    showTemplatesForSession, 
+    createCharacterSheet, 
+    showCharacterSheetsforUser 
+} from "../../utilities/characterSheets-api";
+
+
 import WhiteBoard from "../../components/WhiteBoard/WhiteBoard";
 import DiceRoller from "../../components/DiceRoller/DiceRoller";
 import CharacterSheetTemplateForm from "../../components/CharacterSheetTemplateForm/CharacterSheetTemplateForm";
 import CharacterSheetTemplate from "../../components/CharacterSheetTemplate/CharacterSheetTemplate";
+import CharacterSheet from "../../components/CharacterSheet/CharacterSheet";
 
 export default function SessionDetailPage({ user, sessions }) {
     const { sessionId } = useParams();
     const [session, setSession] = useState(null);
     const [users, setUsers] = useState([]);
     const [templates, setTemplates] = useState([]);
-    const[formData, setFormData] = useState({
-        characterName:''
+    const [characterSheets, setCharacterSheets] = useState([])
+    const [formData, setFormData] = useState({
+        characterName:'Adventurer'
     })
 
     // const [showTemplateForm, setShowTemplateForm] = useState(false);
@@ -42,6 +51,18 @@ export default function SessionDetailPage({ user, sessions }) {
     
                 const fetchedTemplates = await showTemplatesForSession(sessionId);
                 setTemplates(fetchedTemplates);
+                
+                if (fetchedTemplates.length > 0) {
+                    const firstTemplateFields = fetchedTemplates[0].fields;
+                    const initialFormData = {
+                        characterName: '',
+                        ...firstTemplateFields.reduce((acc, field) => {
+                            acc[field.label] = '';
+                            return acc;
+                        }, {}),
+                    };
+                    setFormData(initialFormData);
+                }
     
             } catch (err) {
                 console.log('Error fetching session details', err);
@@ -50,10 +71,23 @@ export default function SessionDetailPage({ user, sessions }) {
         fetchSessionDetails();
     }, [sessionId]);
 
+    useEffect(() => {
+        async function fetchCharacterSheetsForUser() {
+            try {
+                const fetchedCharacterSheets = await showCharacterSheetsforUser();
+                setCharacterSheets(fetchedCharacterSheets);
+            } catch (err) {
+                console.log('Error fetching character sheets', err);
+            }
+        }
+        fetchCharacterSheetsForUser();
+    }, []);
+
     const handleCreateCharacterSheet = async (templateId) => {
         try {
             console.log("Creating character sheet...");
-            await createCharacterSheet(templateId, formData);
+            const updatedFormData = { ...formData, characterName: formData.characterName };
+            await createCharacterSheet(templateId, updatedFormData);
             console.log("Character sheet created");
             const updatedTemplates = await showTemplatesForSession(sessionId);
             console.log("Fetching updated templates");
@@ -81,15 +115,16 @@ export default function SessionDetailPage({ user, sessions }) {
             )} */}
             <CharacterSheetTemplateForm sessionId={sessionId} />
             {templates.map((template, index) => (
-                    <CharacterSheetTemplate
-                        key={template._id}
-                        template={template}
-                        handleCreateCharacterSheet={handleCreateCharacterSheet}
-                        formData={template.formData}
-                        handleChange={handleChange}
-                        sessionId={sessionId}
-                    />
-                ))}
+            <CharacterSheetTemplate
+                key={template._id}
+                template={template}
+                handleCreateCharacterSheet={handleCreateCharacterSheet}
+                formData={formData} 
+                handleChange={handleChange}
+                sessionId={sessionId}
+            />
+        ))}
+            <CharacterSheet user={user} />
             <WhiteBoard />
             <DiceRoller user={user} />
         </>
