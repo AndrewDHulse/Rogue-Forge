@@ -1,4 +1,4 @@
-import { showCharacterSheetsforUser, getField } from "../../utilities/characterSheets-api";
+import { showCharacterSheetsforUser, getField, deleteCharacterSheet } from "../../utilities/characterSheets-api";
 import { useState, useEffect } from "react";
 import DropdownField from "../DropdownField/DropdownField";
 import TextFieldWithValue from "../TextFieldWithValue/TextFieldWithValue";
@@ -52,6 +52,15 @@ export default function CharacterSheet({ user, characterSheet }) {
         return <p>Loading...</p>;
     }
 
+    const handleDeleteCharacterSheet = async () => {
+        try {
+            const response = await deleteCharacterSheet(characterSheet._id);
+            console.log('Delete Response:', response);
+        } catch (err) {
+            console.log('Error deleting character sheet', err);
+        }
+    };
+
     return (
         <div>
             <h3>{characterSheet.characterName}</h3>
@@ -80,6 +89,7 @@ export default function CharacterSheet({ user, characterSheet }) {
                     );
                 })}
             </ul>
+            <button onClick={handleDeleteCharacterSheet}>Delete Character Sheet</button>
         </div>
     );
 }

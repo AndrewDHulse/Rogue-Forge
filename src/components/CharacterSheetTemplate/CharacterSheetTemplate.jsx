@@ -1,3 +1,6 @@
+import { deleteTemplate } from "../../utilities/characterSheets-api";
+
+
 export default function CharacterSheetTemplate({
     template,
     handleCreateCharacterSheet,
@@ -5,6 +8,16 @@ export default function CharacterSheetTemplate({
     handleChange,
     sessionId={sessionId}
 }) {
+
+    const handleDeleteTemplate = async () => {
+        try{
+            const response = await deleteTemplate(template._id);
+            console.log('Delete Response', response);
+        }catch (err){
+            console.log('error deleting template', err)
+        }
+    };
+
     return (
         <div key={template._id}>
             <h3>{template.templateName}</h3>
@@ -64,6 +77,7 @@ export default function CharacterSheetTemplate({
                     </div>
                 ))}
                 <button type="submit">Create Character Sheet</button>
+                <button type="button" onClick={handleDeleteTemplate}>Delete Template</button>
             </form>
         </div>
     );

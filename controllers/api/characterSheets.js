@@ -12,7 +12,9 @@ module.exports={
     createCharacterSheet,
     showTemplatesForSession,
     showCharacterSheetsforUser,
-    getField
+    getField,
+    deleteCharacterSheet,
+    deleteTemplate,
 }
 
 async function createTemplate(req, res) {
@@ -138,5 +140,37 @@ async function getField(req, res) {
     } catch(err) {
         console.log(err);
         res.status(500).json({ err: 'Error while fetching field' });
+    }
+}
+
+async function deleteTemplate(req, res) {
+    try {
+        const templateId = req.params.templateId;
+        const deletedTemplate = await characterSheetTemplate.findByIdAndDelete(templateId);
+
+        if (!deletedTemplate) {
+            return res.status(404).json({ message: 'Template not found' });
+        }
+
+        res.json({ message: 'Template deleted successfully' });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ err: 'Error while deleting template' });
+    }
+}
+
+async function deleteCharacterSheet(req, res) {
+    try {
+        const characterSheetId = req.params.characterSheetId;
+        const deletedCharacterSheet = await CharacterSheet.findByIdAndDelete(characterSheetId);
+
+        if (!deletedCharacterSheet) {
+            return res.status(404).json({ message: 'Character sheet not found' });
+        }
+
+        res.json({ message: 'Character sheet deleted successfully' });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ err: 'Error while deleting character sheet' });
     }
 }

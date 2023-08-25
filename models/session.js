@@ -6,7 +6,6 @@ const sessionSchema = new Schema({
                 type: mongoose.Schema.Types.ObjectId, 
                 ref: 'User',
                 required: true,
-                unique: true,
         },
         players:[{
                 type: mongoose.Schema.Types.ObjectId,

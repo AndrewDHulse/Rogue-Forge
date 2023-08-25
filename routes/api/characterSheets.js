@@ -8,5 +8,8 @@ router.get('/showTemplate/:templateId', characterSheetCtrl.showTemplate);
 router.post('/createSheet/:templateId', characterSheetCtrl.createCharacterSheet);
 router.get('/showTemplatesForSession/:sessionId', characterSheetCtrl.showTemplatesForSession);
 router.get('/showCharacterSheets/:userId', characterSheetCtrl.showCharacterSheetsforUser);
-router.get('/getField/:templateFieldId', characterSheetCtrl.getField)
+router.get('/getField/:templateFieldId', characterSheetCtrl.getField);
+router.delete('/deleteTemplate/:templateId', characterSheetCtrl.deleteTemplate);
+router.delete('/deleteCharacterSheet/:characterSheetId', characterSheetCtrl.deleteCharacterSheet)
+
 module.exports = router

@@ -14,8 +14,8 @@ export default function NewSessionPage(){
     const [sessionData, setSessionData] = useState({
         campaignName: '',
         system: '',
-        DM: getUser(),
-        players:null,
+        DM: currentUser._id,
+        players:[],
     })
 
     const formFields=[
@@ -38,28 +38,33 @@ export default function NewSessionPage(){
 
     const CurrentFieldComponent = formFields[currentField].component;
 
-    function goToNextField(){
-        setCurrentField(currentField + 1);
+    function goToNextField() {
+        if (currentField < formFields.length - 1) {
+            setCurrentField(currentField + 1);
+        }
     }
 
-    function goToPreviousField(){
-        setCurrentField(currentField - 1);
+    function goToPreviousField() {
+        if (currentField > 0) {
+            setCurrentField(currentField - 1);
+        }
     }
 
-    function handleFieldChange(field, value){
-        setSessionData((prevData)=> ({
+    function handleFieldChange(field, value) {
+        setSessionData((prevData) => ({
             ...prevData,
-            [field]: value === null ? undefined : value,
-        }))
+            [field]: value,
+        }));
     }
 
     async function handleSubmit(evt){
         evt.preventDefault();
         try{
             await createSession(sessionData);
+            console.log('session creation successful')
             navigate('/');
         }catch(err){
-            console.log(err)
+            console.log('failed to create new session',err)
         }
     }
 

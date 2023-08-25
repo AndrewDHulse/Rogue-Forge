@@ -26,3 +26,11 @@ export async function showCharacterSheetsforUser(userId){
 export async function getField(templateFieldId){
     return sendRequest(`${BASE_URL}/getField/${templateFieldId}`, 'GET');
 }
+
+export async function deleteTemplate(templateId){
+    return sendRequest(`${BASE_URL}/deleteTemplate/${templateId}`, 'DELETE');
+}
+
+export async function deleteCharacterSheet(characterSheetId){
+    return sendRequest(`${BASE_URL}/deleteCharacterSheet/${characterSheetId}`, 'DELETE')
+}
