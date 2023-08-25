@@ -23,13 +23,37 @@ export default function CharacterSheetTemplate({
                 {template.fields.map((field) => (
                     <div key={field._id}>
                         <label htmlFor={field._id}>{field.label}:</label>
-                        {field.type === "text" && <input type="text" id={field._id} />}
-                        {field.type === "number" && <input type="number" id={field._id} />}
+                        {field.type === "text" && (
+                            <input type="text" 
+                            id={field._id}
+                            name={field.label}  
+                            value={formData[field.label]}
+                            onChange={handleChange}
+                            />
+                            )}
+                        {field.type === "number" &&(
+                            <input type="number" 
+                            id={field._id} 
+                            name={field.label} 
+                            value={formData[field.label]}
+                            onChange={handleChange}
+                            />
+                            )}
                         {field.type === "checkbox" && (
-                            <input type="checkbox" id={field._id} />
+                            <input type="checkbox" 
+                            id={field._id} 
+                            name={field.label}
+                            value={formData[field.label]} 
+                            onChange={handleChange}
+                            />
                         )}
                         {field.type === "dropdown" && (
-                            <select id={field._id}>
+                            <select 
+                            id={field._id}
+                            name={field.label} 
+                            value={formData[field.label]}
+                            onChange={handleChange}
+                            >
                                 {field.options.map((option) => (
                                     <option key={option.value} value={option.value}>
                                         {option.label}

@@ -74,7 +74,7 @@ export default function SessionDetailPage({ user, sessions }) {
     useEffect(() => {
         async function fetchCharacterSheetsForUser() {
             try {
-                const fetchedCharacterSheets = await showCharacterSheetsforUser();
+                const fetchedCharacterSheets = await showCharacterSheetsforUser(user._id);
                 setCharacterSheets(fetchedCharacterSheets);
             } catch (err) {
                 console.log('Error fetching character sheets', err);
@@ -83,19 +83,46 @@ export default function SessionDetailPage({ user, sessions }) {
         fetchCharacterSheetsForUser();
     }, []);
 
-    const handleCreateCharacterSheet = async (templateId) => {
+    const handleCreateCharacterSheet = async (template) => { 
         try {
             console.log("Creating character sheet...");
-            const updatedFormData = { ...formData, characterName: formData.characterName };
-            await createCharacterSheet(templateId, updatedFormData);
-            console.log("Character sheet created");
+    
+            const updatedFormData = {
+                ...formData,
+                characterName: formData.characterName,
+                ...template.fields.reduce((acc, field) => {
+                    acc[field.label] = formData[field.label];
+                    return acc;
+                }, {}),
+            };
+            const response = await createCharacterSheet(template._id, updatedFormData); 
+            console.log('API Response:', response);
+    
             const updatedTemplates = await showTemplatesForSession(sessionId);
-            console.log("Fetching updated templates");
+            console.log('Fetched updated templates:', updatedTemplates);
+    
             setTemplates(updatedTemplates);
         } catch (err) {
             console.log('Error creating character sheet', err);
         }
     };
+
+    useEffect(() => {
+        async function updateCharacterSheets() {
+            try {
+                const fetchedCharacterSheets = await showCharacterSheetsforUser(user._id);
+                setCharacterSheets(fetchedCharacterSheets);
+            } catch (err) {
+                console.log('Error fetching character sheets', err);
+            }
+        }
+
+        if (templates.length > 0) {
+            updateCharacterSheets();
+        }
+    }, [templates]);
+
+    
 
     return (
         <>
@@ -115,16 +142,22 @@ export default function SessionDetailPage({ user, sessions }) {
             )} */}
             <CharacterSheetTemplateForm sessionId={sessionId} />
             {templates.map((template, index) => (
-            <CharacterSheetTemplate
-                key={template._id}
-                template={template}
-                handleCreateCharacterSheet={handleCreateCharacterSheet}
-                formData={formData} 
-                handleChange={handleChange}
-                sessionId={sessionId}
-            />
-        ))}
-            <CharacterSheet user={user} />
+                <CharacterSheetTemplate
+                    key={template._id}
+                    template={template}
+                    handleCreateCharacterSheet={() => handleCreateCharacterSheet(template)}
+                    formData={formData} 
+                    handleChange={handleChange}
+                    sessionId={sessionId}
+                />
+            ))}
+            {characterSheets.map((characterSheet) => (
+                        <CharacterSheet
+                            key={characterSheet._id}
+                            characterSheet={characterSheet}
+                            user={user}
+                        />
+                    ))}
             <WhiteBoard />
             <DiceRoller user={user} />
         </>

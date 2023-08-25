@@ -3,13 +3,16 @@ const Session = require('../../models/session')
 const CharacterSheet = require('../../models/characterSheet')
 const characterSheetTemplate = require('../../models/characterSheetTemplate')
 const characterSheet = require('../../models/characterSheet')
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
 module.exports={
     createTemplate,
     showTemplate,
     createCharacterSheet,
     showTemplatesForSession,
-    showCharacterSheetsforUser
+    showCharacterSheetsforUser,
+    getField
 }
 
 async function createTemplate(req, res) {
@@ -43,21 +46,23 @@ async function showTemplate(req, res){
     }
 }
 
-async function createCharacterSheet(req, res){
+async function createCharacterSheet(req, res) {
     try {
         const template = await characterSheetTemplate.findById(req.params.templateId);
-
         if (!template) {
             return res.status(404).json({ message: 'Template not found' });
         }
 
-        const values = template.fields.map(field => ({
-            field: field._id, 
-            value: req.body[field.label] 
-        }));
+        const values = template.fields.map(templateField => {
+            const value = req.body[templateField.label]; 
+            return {
+                field: new ObjectId (templateField._id), 
+                value: value
+        };
+        });
 
         const formData = {
-            characterName: req.body.characterName, 
+            characterName: req.body.characterName,
             user: req.user._id,
             template: template._id,
             values: values
@@ -65,9 +70,9 @@ async function createCharacterSheet(req, res){
 
         const createdCharacterSheet = await CharacterSheet.create(formData);
         res.json(createdCharacterSheet);
-    }catch(err){
+    } catch (err) {
         console.log(err);
-        res.status(500).json({err: 'error while creating character sheet'})
+        res.status(500).json({ err: 'error while creating character sheet' });
     }
 }
 
@@ -86,22 +91,52 @@ async function showTemplatesForSession(req, res) {
     }
 }
 
-async function showCharacterSheetsforUser(req, res){
-    try{
-        const userId=req.user._id;
-        const characterSheets = await CharacterSheet.find({user : userId}).populate('template')
-        const characterSheetsWithData = characterSheets.map((characterSheet)=>{
-            const formData={
+async function showCharacterSheetsforUser(req, res) {
+    try {
+        const userId = req.user._id;
+
+        const characterSheets = await CharacterSheet.find({ user: userId })
+            .populate('template')
+            .exec();
+
+        const characterSheetsWithData = characterSheets.map((characterSheet) => {
+            const formData = {
                 characterName: characterSheet.characterName,
             };
-            return{
+            return {
                 ...characterSheet.toObject(),
-                formData: formData
-            }
-        })
-        res.json(characterSheetsWithData)
-    }catch(err){
+                formData: formData,
+            };
+        });
+
+        res.json(characterSheetsWithData);
+    } catch (err) {
         console.log(err);
-        res.status(500).json({err: 'error while fetching Character Sheets'})
+        res.status(500).json({ err: 'error while fetching Character Sheets' });
+    }
+}
+
+async function getField(req, res) {
+    try {
+        const templateFieldId = req.params.templateFieldId;
+
+        // Find the template that contains my fields
+        const template = await characterSheetTemplate.findOne({ "fields._id": templateFieldId });
+
+        if (!template) {
+            return res.status(404).json({ message: 'Field not found' });
+        }
+
+        // Find tfield within  templates fields array
+        const field = template.fields.find(field => field._id.toString() === templateFieldId);
+
+        if (!field) {
+            return res.status(404).json({ message: 'Field not found' });
+        }
+
+        res.json(field);
+    } catch(err) {
+        console.log(err);
+        res.status(500).json({ err: 'Error while fetching field' });
     }
 }
