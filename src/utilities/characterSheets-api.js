@@ -34,3 +34,7 @@ export async function deleteTemplate(templateId){
 export async function deleteCharacterSheet(characterSheetId){
     return sendRequest(`${BASE_URL}/deleteCharacterSheet/${characterSheetId}`, 'DELETE')
 }
+
+export async function updateCharacterSheet(characterSheetId, updatedCharacterSheet) {
+    return sendRequest(`${BASE_URL}/editSheet/${characterSheetId}`, 'PUT', updatedCharacterSheet);
+}

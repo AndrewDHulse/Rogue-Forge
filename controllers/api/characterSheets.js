@@ -6,6 +6,7 @@ const characterSheet = require('../../models/characterSheet')
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
+
 module.exports={
     createTemplate,
     showTemplate,
@@ -15,6 +16,7 @@ module.exports={
     getField,
     deleteCharacterSheet,
     deleteTemplate,
+    updateCharacterSheet,
 }
 
 async function createTemplate(req, res) {
@@ -172,5 +174,45 @@ async function deleteCharacterSheet(req, res) {
     } catch (err) {
         console.log(err);
         res.status(500).json({ err: 'Error while deleting character sheet' });
+    }
+}
+
+async function updateCharacterSheet(req, res) {
+    try {
+        const characterSheetId = req.params.characterSheetId;
+        const updatedValues = req.body.values; // Array of updated field values
+
+        // Find the character sheet by ID
+        const characterSheet = await CharacterSheet.findById(characterSheetId);
+
+        if (!characterSheet) {
+            return res.status(404).json({ message: 'Character sheet not found' });
+        }
+
+        console.log('Received updated values:', updatedValues); // Add this line
+
+        // Iterate through the updated values and update the corresponding fields in the character sheet
+        for (const updatedField of updatedValues) {
+            const { field, value } = updatedField;
+        
+            // Find the field in the character sheet's values array using the `equals` method
+            const existingField = characterSheet.values.find(f => f.field.equals(field));
+        
+            if (existingField) {
+                // Update the field's value
+                existingField.value = value;
+            } else {
+                // Handle the case where the field is not found (optional)
+                console.log(`Field ${field} not found in character sheet`);
+            }
+        }
+
+        // Save the updated character sheet
+        const updatedCharacterSheet = await characterSheet.save();
+
+        res.json(updatedCharacterSheet);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ err: 'Error while editing character sheet', details: err.message });
     }
 }

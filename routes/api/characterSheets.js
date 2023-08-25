@@ -11,5 +11,6 @@ router.get('/showCharacterSheets/:userId', characterSheetCtrl.showCharacterSheet
 router.get('/getField/:templateFieldId', characterSheetCtrl.getField);
 router.delete('/deleteTemplate/:templateId', characterSheetCtrl.deleteTemplate);
 router.delete('/deleteCharacterSheet/:characterSheetId', characterSheetCtrl.deleteCharacterSheet)
+router.put('/editSheet/:characterSheetId', characterSheetCtrl.updateCharacterSheet)
 
 module.exports = router

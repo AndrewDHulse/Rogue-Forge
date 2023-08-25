@@ -1,4 +1,4 @@
-import { showCharacterSheetsforUser, getField, deleteCharacterSheet } from "../../utilities/characterSheets-api";
+import { showCharacterSheetsforUser, getField, deleteCharacterSheet, updateCharacterSheet } from "../../utilities/characterSheets-api";
 import { useState, useEffect } from "react";
 import DropdownField from "../DropdownField/DropdownField";
 import TextFieldWithValue from "../TextFieldWithValue/TextFieldWithValue";
@@ -9,6 +9,11 @@ import NumberFieldWithValue from "../NumberFieldWithValue/NumberFieldWithValue";
 export default function CharacterSheet({ user, characterSheet }) {
     const [template, setTemplate] = useState(null);
     const [fieldData, setFieldData] = useState([]);
+    const [isEditing, setIsEditing] = useState(false);
+
+    const handleToggleEdit = () => {
+        setIsEditing(prevIsEditing => !prevIsEditing);
+    };
 
     useEffect(() => {
         console.log('characterSheet prop:', characterSheet);
@@ -21,7 +26,7 @@ export default function CharacterSheet({ user, characterSheet }) {
         async function fetchFieldData() {
             try {
                 if (!characterSheet || !characterSheet.values) {
-                    console.log('characterSheet or values is null or undefined');
+                    console.log('characterSheet or values null/undefined');
                     return;
                 }
                 const fieldPromises = characterSheet.values.map(async (valueObj) => {
@@ -48,18 +53,55 @@ export default function CharacterSheet({ user, characterSheet }) {
         }
     }, [characterSheet]);
 
-    if (!user || !characterSheet || !template) {
-        return <p>Loading...</p>;
-    }
-
+    
     const handleDeleteCharacterSheet = async () => {
         try {
+            console.log('delete character sheet with ID:', characterSheet._id);
             const response = await deleteCharacterSheet(characterSheet._id);
             console.log('Delete Response:', response);
         } catch (err) {
             console.log('Error deleting character sheet', err);
         }
     };
+    
+    const handleUpdateCharacterSheet = async () => {
+        try {
+            console.log('Updating character sheet with ID:', characterSheet._id);
+    
+            const updatedValues = fieldData.map(fieldInfo => ({
+                field: fieldInfo.fieldData._id,
+                value: fieldInfo.value,
+            }));
+    
+            const updatedCharacterSheet = {
+                values: updatedValues,
+            };
+    
+            console.log('Updated character sheet data:', updatedCharacterSheet);
+    
+            const response = await updateCharacterSheet(characterSheet._id, updatedCharacterSheet);
+            console.log('Update Response:', response);
+        } catch (err) {
+            console.log('Error updating character sheet', err);
+        }
+    };
+    
+    
+    const handleFieldChange = (field, newValue) => {
+        setFieldData((prevData) =>
+        prevData.map((fieldInfo) => {
+            if (fieldInfo.field === field) {
+                    return { ...fieldInfo, value: newValue };
+                }
+                return fieldInfo;
+            })
+        );
+    };
+
+    
+    if (!user || !characterSheet || !template) {
+        return <p>Loading...</p>;
+    }
 
     return (
         <div>
@@ -70,26 +112,47 @@ export default function CharacterSheet({ user, characterSheet }) {
                     const { field, value, fieldData } = fieldInfo;
                     const fieldType = fieldData.type;
                     console.log(fieldData.label)
-
                     return (
                         <li key={field._id}>
                             {fieldType === 'checkbox' && (
-                                <CheckboxFieldWithValue label={fieldData.label} value={value} />
+                                <CheckboxFieldWithValue
+                                label={fieldData.label}
+                                value={value}
+                                disabled={!isEditing}
+                                onChange={(newValue) => handleFieldChange(field, newValue)}
+                            />
                             )}
                             {fieldType === 'text' && (
-                                <TextFieldWithValue label={fieldData.label} value={value} />
+                                <TextFieldWithValue
+                                    label={fieldData.label}
+                                    value={value}
+                                    disabled={!isEditing}
+                                    onChange={(newValue) => handleFieldChange(field, newValue)}
+                                />
                             )}
                             {fieldType === 'number' && (
-                                <NumberFieldWithValue label={fieldData.label} value={value} />
+                                <NumberFieldWithValue
+                                    label={fieldData.label}
+                                    value={value}
+                                    disabled={!isEditing}
+                                    onChange={(newValue) => handleFieldChange(field, newValue)}
+                                />
                             )}
                             {fieldType === 'dropdown' && (
-                                <DropdownField label={fieldData.label} value={value} />
-                            )}
+                                <DropdownField
+                                    label={fieldData.label}
+                                    value={value}
+                                    disabled={!isEditing}
+                                    onChange={(newValue) => handleFieldChange(field, newValue)}
+                            />
+                        )}
                         </li>
                     );
                 })}
             </ul>
             <button onClick={handleDeleteCharacterSheet}>Delete Character Sheet</button>
+            <button onClick={handleToggleEdit}>Toggle Edit Mode</button>
+            <button onClick={handleUpdateCharacterSheet}>Update Character Sheet</button>
         </div>
     );
 }
