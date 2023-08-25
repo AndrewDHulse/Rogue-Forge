@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { signUp } from '../../utilities/users-service';
+import { useNavigate } from 'react-router-dom';
+import { showCharacterSheetsforUser } from '../../utilities/characterSheets-api';
 
 export default function SignUpForm({ }) {
   const [formData, setFormData] = useState({
@@ -8,6 +10,7 @@ export default function SignUpForm({ }) {
     password: '',
     role: 'Player'
   });
+  const navigate=useNavigate()
 
   const handleChange = evt => {
     const { name, value } = evt.target;
@@ -21,6 +24,8 @@ export default function SignUpForm({ }) {
     evt.preventDefault();
     try {
       await signUp(formData);
+      showCharacterSheetsforUser(formData)
+      navigate('/');
     } catch (error) {
       console.error('Error signing up:', error);
       if (error.response) {

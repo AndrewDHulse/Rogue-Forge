@@ -1,10 +1,13 @@
+import { useNavigate } from 'react-router-dom'
 import {useState} from 'react'
 import SignUpForm from '../../components/SignUpForm/SignUpForm'
 import LoginForm from '../../components/LoginForm/LoginForm'
 
-export default function AuthPage({setUser}){
-    const [showLogin, setShowLogin] = useState(true);
 
+export default function AuthPage({ setUser }) {
+    const navigate = useNavigate()
+    const [showLogin, setShowLogin] = useState(true);
+ 
     return (
         <main className="AuthPage">
             <div>
