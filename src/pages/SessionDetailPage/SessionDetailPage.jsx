@@ -16,8 +16,7 @@ import DiceRoller from "../../components/DiceRoller/DiceRoller";
 import CharacterSheetTemplateForm from "../../components/CharacterSheetTemplateForm/CharacterSheetTemplateForm";
 import CharacterSheetTemplate from "../../components/CharacterSheetTemplate/CharacterSheetTemplate";
 import CharacterSheet from "../../components/CharacterSheet/CharacterSheet";
-import {Button} from 'react-bootstrap'
-import {Modal} from 'react-bootstrap'
+import { Tabs, Tab, Button, Modal } from 'react-bootstrap';
 import './SessionDetailPage.css'
 
 export default function SessionDetailPage({ user, sessions }) {
@@ -143,41 +142,6 @@ export default function SessionDetailPage({ user, sessions }) {
                 </Modal.Header>
                 <Modal.Body>
                     <CharacterSheetTemplateForm sessionId={sessionId} onClose={handleCloseCreateTemplate} />
-                    {areTemplatesLoading ? (
-                        <p>Loading templates...</p>
-                    ) : (
-                        templates.map((template, index) => (
-                            <CharacterSheetTemplate
-                                key={template._id}
-                                template={{
-                                    ...template,
-                                    fields: template.fields.map(field => {
-                                        if (field.dropdownOptionsArray) {
-                                            return {
-                                                ...field,
-                                                dropdownOptionsArray: field.dropdownOptionsArray.map(option => ({
-                                                    ...option,
-                                                    label: option.label.trim(),
-                                                    value: option.value.trim()
-                                                }))
-                                            };
-                                        } else {
-                                            return field;
-                                        }
-                                    })
-                                }}
-                                handleCreateCharacterSheet={() => handleCreateCharacterSheet(template)}
-                                formData={formData}
-                                handleChange={handleChange}
-                                sessionId={sessionId}
-                            />
-                        ))
-                    )}
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleCloseCreateTemplate}>
-                            Close
-                        </Button>
-                    </Modal.Footer>
                 </Modal.Body>
             </Modal>
 
@@ -191,9 +155,39 @@ export default function SessionDetailPage({ user, sessions }) {
             <WhiteBoard />
             <DiceRoller user={user} />
             
-            <Button variant="primary" onClick={handleShowCreateTemplate}>
+            <Button variant="secondary" onClick={handleShowCreateTemplate}>
                 Add a template
             </Button>
+            {areTemplatesLoading ? (
+                <p>Loading templates...</p>
+            ) : (
+                templates.map((template, index) => (
+                    <CharacterSheetTemplate
+                        key={template._id}
+                        template={{
+                            ...template,
+                            fields: template.fields.map(field => {
+                                if (field.dropdownOptionsArray) {
+                                    return {
+                                        ...field,
+                                        dropdownOptionsArray: field.dropdownOptionsArray.map(option => ({
+                                            ...option,
+                                            label: option.label.trim(),
+                                            value: option.value.trim()
+                                        }))
+                                    };
+                                } else {
+                                    return field;
+                                }
+                            })
+                        }}
+                        handleCreateCharacterSheet={() => handleCreateCharacterSheet(template)}
+                        formData={formData}
+                        handleChange={handleChange}
+                        sessionId={sessionId}
+                    />
+                ))
+            )}
         </>
         ) : (
         <p>Loading...</p>

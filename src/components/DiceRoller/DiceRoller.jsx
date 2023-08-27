@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import './DiceRoller.css'
+import {Button} from 'react-bootstrap'
 export default function DiceRoller({ user }) {
     const Roll = {
         D4: () => Math.floor(Math.random() * 4) + 1,
@@ -35,8 +36,16 @@ export default function DiceRoller({ user }) {
 
     
     return (
-        <div>
+        <div className="diceRoller">
+                {diceRolled && (
+                    <h1 className="rollOutput">
+                        Result for {rollQuantity} {selectedDice}: {totalRoll}
+                    </h1>
+                )}
             <form className="diceRoll">
+                <Button variant="secondary" className="diceRollButton" onClick={handleRoll}>
+                    Roll Em
+                </Button>
                 <input
                     type="number"
                     id="diceQuantity"
@@ -55,14 +64,6 @@ export default function DiceRoller({ user }) {
                         </option>
                     ))}
                 </select>
-                <button className="diceRollButton" onClick={handleRoll}>
-                    Roll Em
-                </button>
-            {diceRolled && (
-                <h1 className="rollOutput">
-                    Result for {rollQuantity} {selectedDice}: {totalRoll}
-                </h1>
-            )}
             </form>
         </div>
     );

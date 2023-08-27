@@ -5,6 +5,8 @@ import CheckboxField from "../CheckboxField/CheckBoxField";
 import DropdownField from "../DropdownField/DropdownField";
 import NumberField from "../NumberField/NumberField";
 import TextField from "../TextField/TextField";
+import {Button} from 'react-bootstrap'
+import './CharacterSheetTemplateForm.css'
 
 export default function CharacterSheetTemplateForm({ sessionId, onClose}){
     const [fields, setFields] = useState([]);
@@ -56,47 +58,51 @@ export default function CharacterSheetTemplateForm({ sessionId, onClose}){
             <form onSubmit={handleSubmit}>
                 <label>
                     Template Name: 
+                </label>
+                &nbsp;
                     <input
                         type="text"
                         value={templateName}
                         onChange={handleTemplateNameChange}
                         required
+                        style={{marginTop: "10"}}
                     />
-                </label>
                 {fields.map((field, index) =>(
                     <div key={index} style={{ marginBottom: "10px" }}>
-                    <CharacterSheetField 
+                    <CharacterSheetField
                         index={index}
                         field={field}
                         onChange={handleFieldChange}
                     />
                     </div>
                 ))}
-                <button type='button' onClick={handleAddField}>
+                <Button type='button' variant="secondary" onClick={handleAddField}>
                     Add Field        
-                </button>
-                <button type='submit'>Submit</button>
+                </Button>
+                        <Button type='submit' variant="secondary">Submit</Button>
             </form>
-            <h2>Preview:</h2>
             <div style={{ border: "1px solid #ccc", padding: "10px" }}>
-                <h3>{templateName}</h3>
+            <h2>Preview</h2>
+            <hr/>
+                <h3 className="preview-template-name">{templateName}</h3>
                 {fields.map((field, index) => (
                     <div key={index}>
+                        <hr/>
                         {field.type === "checkbox" && <CheckboxField label={field.label} />}
                         {field.type === "number" && <NumberField label={field.label} />}
                         {field.type === "text" && <TextField label={field.label} />}
                         {field.type === "dropdown" && (
                             <DropdownField
-                                label={field.label}
-                                options={field.dropdownOptionsArray}
-                                onChange={(options) => {
-                                    const updatedField = { ...field, dropdownOptions: options.map(option => option.value).join(', '), dropdownOptionsArray: options };
-                                    handleFieldChange(index, updatedField);
-                                }}
-                                onAddOption={() => onAddDropdownOption(index)}
-                                onOptionChange={(optionIndex, updatedOption) => onDropdownOptionChange(index, optionIndex, updatedOption)} // Pass the function here
+                            label={field.label}
+                            options={field.dropdownOptionsArray}
+                            onChange={(options) => {
+                                const updatedField = { ...field, dropdownOptions: options.map(option => option.value).join(', '), dropdownOptionsArray: options };
+                                handleFieldChange(index, updatedField);
+                            }}
+                            onAddOption={() => onAddDropdownOption(index)}
+                            onOptionChange={(optionIndex, updatedOption) => onDropdownOptionChange(index, optionIndex, updatedOption)}
                             />
-                        )}
+                            )}
                     </div>
                 ))}
             </div>

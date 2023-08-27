@@ -1,6 +1,6 @@
 import { useState, useRef } from "react"
 import './WhiteBoard.css'
-
+import {Button} from 'react-bootstrap'
 
 export default function WhiteBoard(){
     const canvasRef = useRef(null);
@@ -68,8 +68,8 @@ export default function WhiteBoard(){
                 onMouseUp={handleMouseUp}
                 onMouseOut={handleMouseOut}
             ></canvas>
-            <button onClick={toggleEraser}>{isErasing ? 'DRAW' : 'ERASE'}</button>
-            <button onClick={clearCanvas}>CLEAR</button>
+            <Button variant="secondary" onClick={toggleEraser}>{isErasing ? 'DRAW' : 'ERASE'}</Button>
+            <Button variant="secondary" onClick={clearCanvas}>CLEAR</Button>
         </div>
     )
 }

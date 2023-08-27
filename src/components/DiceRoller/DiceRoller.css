@@ -1,3 +1,10 @@
+.diceRoller{
+    border: solid 5px 
+}
 .rollOutput{
     font-family: 'Goudy Bookletter 1911', serif;
+}
+.diceRollButton{
+    display: flex;
+    align-items: start;
 }
