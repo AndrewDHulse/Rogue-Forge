@@ -6,7 +6,7 @@ import DropdownField from "../DropdownField/DropdownField";
 import NumberField from "../NumberField/NumberField";
 import TextField from "../TextField/TextField";
 
-export default function CharacterSheetTemplateForm({ sessionId }){
+export default function CharacterSheetTemplateForm({ sessionId, onClose}){
     const [fields, setFields] = useState([]);
     const [templateName, setTemplateName] = useState('');
 
@@ -45,6 +45,7 @@ export default function CharacterSheetTemplateForm({ sessionId }){
                 fields: fields,
             };
             await createTemplate(sessionId, templateData);
+            onClose()
         }catch(err){
             console.log(err)
         }

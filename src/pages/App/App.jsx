@@ -10,7 +10,7 @@ import NewSessionPage from '../../pages/NewSessionPage/NewSessionPage';
 import SessionIndex from '../../pages/SessionIndex/SessionIndex';
 import SessionDetailPage from '../SessionDetailPage/SessionDetailPage';
 import HomePage from '../../pages/HomePage/Homepage';
-
+import { Container } from 'react-bootstrap'
 export default function App() {
   const [user, setUser] = useState(getUser());
   const [sessions, setSessions] = useState([]);
@@ -29,6 +29,7 @@ export default function App() {
   }, []);
 
   return (
+    <Container style={{ backgroundColor: 'rgb(36, 34, 34)' }}>
     <main className="App">
       <NavBar user={user} setUser={setUser} />
       <Routes>
@@ -45,5 +46,6 @@ export default function App() {
         )}
       </Routes>
     </main>
+  </Container>
   );
 }
