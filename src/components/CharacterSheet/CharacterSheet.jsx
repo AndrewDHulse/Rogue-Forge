@@ -4,7 +4,7 @@ import DropdownField from "../DropdownField/DropdownField";
 import TextFieldWithValue from "../TextFieldWithValue/TextFieldWithValue";
 import CheckboxFieldWithValue from "../CheckboxFieldWithValue/CheckBoxFieldWithValue";
 import NumberFieldWithValue from "../NumberFieldWithValue/NumberFieldWithValue";
-
+import {Button} from 'react-bootstrap'
 
 export default function CharacterSheet({ user, characterSheet }) {
     const [template, setTemplate] = useState(null);
@@ -114,6 +114,7 @@ export default function CharacterSheet({ user, characterSheet }) {
                     console.log(fieldData.label)
                     return (
                         <li key={field._id}>
+                            <hr/>
                             {fieldType === 'checkbox' && (
                                 <CheckboxFieldWithValue
                                 label={fieldData.label}
@@ -150,9 +151,9 @@ export default function CharacterSheet({ user, characterSheet }) {
                     );
                 })}
             </ul>
-            <button onClick={handleDeleteCharacterSheet}>Delete Character Sheet</button>
-            <button onClick={handleToggleEdit}>Toggle Edit Mode</button>
-            <button onClick={handleUpdateCharacterSheet}>Update Character Sheet</button>
+            <Button variant="secondary" onClick={handleDeleteCharacterSheet}>Delete Character Sheet</Button>
+            <Button variant="secondary" onClick={handleToggleEdit}>Toggle Edit Mode</Button>
+            <Button variant="secondary" onClick={handleUpdateCharacterSheet}>Update Character Sheet</Button>
         </div>
     );
 }

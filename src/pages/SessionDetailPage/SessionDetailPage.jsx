@@ -31,9 +31,12 @@ export default function SessionDetailPage({ user, sessions }) {
     })
     
     const [showCreateTemplate, setShowCreateTemplate] = useState(false);
-
     const handleCloseCreateTemplate = () => setShowCreateTemplate(false);
     const handleShowCreateTemplate = () => setShowCreateTemplate(true);
+
+    const [showTemplate, setShowShowTemplate] = useState(false);
+    const handleCloseShowTemplate = () => setShowShowTemplate(false);
+    const handleShowShowTemplate = () => setShowShowTemplate(true)
 
 
     const handleChange = (evt) => {
@@ -106,6 +109,7 @@ export default function SessionDetailPage({ user, sessions }) {
             console.log('Fetched updated templates:', updatedTemplates);
     
             setTemplates(updatedTemplates);
+            handleCloseShowTemplate()
         } catch (err) {
             console.log('Error creating character sheet', err);
         }
@@ -158,40 +162,61 @@ export default function SessionDetailPage({ user, sessions }) {
             <Button variant="secondary" onClick={handleShowCreateTemplate}>
                 Add a template
             </Button>
+
+            <Modal show={showTemplate} onHide={handleCloseShowTemplate} centered>
+    <Modal.Header closeButton>
+        Create a Character
+    </Modal.Header>
+    <Modal.Body>
+        <Tabs defaultActiveKey={0} id="character-sheet-tabs">
             {areTemplatesLoading ? (
-                <p>Loading templates...</p>
+                <Tab eventKey={0} title="Loading...">
+                    <p>Loading templates...</p>
+                </Tab>
             ) : (
                 templates.map((template, index) => (
-                    <CharacterSheetTemplate
+                    <Tab
+                        eventKey={index}
+                        title={template.templateName}
                         key={template._id}
-                        template={{
-                            ...template,
-                            fields: template.fields.map(field => {
-                                if (field.dropdownOptionsArray) {
-                                    return {
-                                        ...field,
-                                        dropdownOptionsArray: field.dropdownOptionsArray.map(option => ({
-                                            ...option,
-                                            label: option.label.trim(),
-                                            value: option.value.trim()
-                                        }))
-                                    };
-                                } else {
-                                    return field;
-                                }
-                            })
-                        }}
-                        handleCreateCharacterSheet={() => handleCreateCharacterSheet(template)}
-                        formData={formData}
-                        handleChange={handleChange}
-                        sessionId={sessionId}
-                    />
+                    >
+                        <CharacterSheetTemplate
+                            onClose={handleCloseShowTemplate}
+                            template={{
+                                ...template,
+                                fields: template.fields.map(field => {
+                                    if (field.dropdownOptionsArray) {
+                                        return {
+                                            ...field,
+                                            dropdownOptionsArray: field.dropdownOptionsArray.map(option => ({
+                                                ...option,
+                                                label: option.label.trim(),
+                                                value: option.value.trim()
+                                            }))
+                                        };
+                                    } else {
+                                        return field;
+                                    }
+                                })
+                            }}
+                            handleCreateCharacterSheet={() => handleCreateCharacterSheet(template)}
+                            formData={formData}
+                            handleChange={handleChange}
+                            sessionId={sessionId}
+                        />
+                    </Tab>
                 ))
             )}
+        </Tabs>
+    </Modal.Body>
+</Modal>
         </>
         ) : (
         <p>Loading...</p>
         )}
-        </>
+        <Button variant="secondary" onClick={handleShowShowTemplate}>
+            Create a Character
+        </Button>
+        </>       
     );
 }

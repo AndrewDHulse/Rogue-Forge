@@ -1,12 +1,13 @@
 import { deleteTemplate } from "../../utilities/characterSheets-api";
-
+import { Button, } from 'react-bootstrap';
 
 export default function CharacterSheetTemplate({
     template,
     handleCreateCharacterSheet,
     formData,
     handleChange,
-    sessionId={sessionId}
+    sessionId={sessionId},
+    onClose
 }) {
     console.log('Template', template)
     console.log('formdata', formData)
@@ -14,6 +15,7 @@ export default function CharacterSheetTemplate({
         try{
             const response = await deleteTemplate(template._id);
             console.log('Delete Response', response);
+            onClose()
         }catch (err){
             console.log('error deleting template', err)
         }
@@ -33,10 +35,11 @@ export default function CharacterSheetTemplate({
                     value={formData.characterName}
                     onChange={handleChange}
                     required
-                />
+                    />
                 {(console.log('Template in CharacterSheetTemplate:', template))}
                 {template.fields.map((field) => (
                     <div key={field._id}>
+                        <hr/>
                         <label htmlFor={field._id}>{field.label}:</label>
                         {field.type === "text" && (
                             <input type="text" 
@@ -46,6 +49,7 @@ export default function CharacterSheetTemplate({
                             onChange={handleChange}
                             />
                             )}
+                            
                         {field.type === "number" &&(
                             <input type="number" 
                             id={field._id} 
@@ -82,8 +86,8 @@ export default function CharacterSheetTemplate({
                         )}
                     </div>
                 ))}
-                <button type="submit">Create Character Sheet</button>
-                <button type="button" onClick={handleDeleteTemplate}>Delete Template</button>
+                <Button type="submit" variant="secondary" >Create Character Sheet</Button>
+                <Button type="button"  variant="secondary" onClick={handleDeleteTemplate}>Delete Template</Button>
             </form>
         </div>
     );
