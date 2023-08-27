@@ -11,15 +11,26 @@ export default function CharacterSheetTemplateForm({ sessionId }){
     const [templateName, setTemplateName] = useState('');
 
     const handleAddField=()=>{
-        setFields([...fields, {label: '', type: 'text', dropdownOptions: ['separate options with commas']}]);
+        setFields([...fields, {label: '', type: 'text', dropdownOptionsArray: []}]);
         console.log('Fields after adding:', fields)
     };
-    
-    const handleFieldChange = (index, updatedField)=> {
+
+    const handleFieldChange = (index, updatedField) => {
         const updatedFields = [...fields];
-        updatedFields[index] = updatedField;
+    
+        if (updatedField.type === "dropdown" && typeof updatedField.dropdownOptions === 'string') {
+            updatedFields[index] = {
+                ...updatedField,
+                dropdownOptionsArray: updatedField.dropdownOptions.split(',').map(option => {
+                    return { label: option.trim(), value: option.trim() };
+                }),
+            };
+        } else {
+            updatedFields[index] = updatedField;
+        }
+    
         setFields(updatedFields);
-        console.log('Fields after updating:', fields)
+        console.log('Fields after updating:', fields);
     };
 
     const handleTemplateNameChange = (evt) => {
@@ -67,13 +78,23 @@ export default function CharacterSheetTemplateForm({ sessionId }){
             </form>
             <h2>Preview:</h2>
             <div style={{ border: "1px solid #ccc", padding: "10px" }}>
+                <h3>{templateName}</h3>
                 {fields.map((field, index) => (
                     <div key={index}>
                         {field.type === "checkbox" && <CheckboxField label={field.label} />}
                         {field.type === "number" && <NumberField label={field.label} />}
                         {field.type === "text" && <TextField label={field.label} />}
                         {field.type === "dropdown" && (
-                            <DropdownField label={field.label} options={field.dropdownOptions} />
+                            <DropdownField
+                                label={field.label}
+                                options={field.dropdownOptionsArray}
+                                onChange={(options) => {
+                                    const updatedField = { ...field, dropdownOptions: options.map(option => option.value).join(', '), dropdownOptionsArray: options };
+                                    handleFieldChange(index, updatedField);
+                                }}
+                                onAddOption={() => onAddDropdownOption(index)}
+                                onOptionChange={(optionIndex, updatedOption) => onDropdownOptionChange(index, optionIndex, updatedOption)} // Pass the function here
+                            />
                         )}
                     </div>
                 ))}

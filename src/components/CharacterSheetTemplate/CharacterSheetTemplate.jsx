@@ -8,7 +8,8 @@ export default function CharacterSheetTemplate({
     handleChange,
     sessionId={sessionId}
 }) {
-
+    console.log('Template', template)
+    console.log('formdata', formData)
     const handleDeleteTemplate = async () => {
         try{
             const response = await deleteTemplate(template._id);
@@ -33,6 +34,7 @@ export default function CharacterSheetTemplate({
                     onChange={handleChange}
                     required
                 />
+                {(console.log('Template in CharacterSheetTemplate:', template))}
                 {template.fields.map((field) => (
                     <div key={field._id}>
                         <label htmlFor={field._id}>{field.label}:</label>
@@ -62,13 +64,17 @@ export default function CharacterSheetTemplate({
                         )}
                         {field.type === "dropdown" && (
                             <select 
-                            id={field._id}
-                            name={field.label} 
-                            value={formData[field.label]}
-                            onChange={handleChange}
+                                id={field._id}
+                                name={field.label} 
+                                value={formData[field.label]}  
+                                onChange={handleChange}
                             >
-                                {field.options.map((option) => (
-                                    <option key={option.value} value={option.value}>
+                                {field.dropdownOptionsArray.map((option) => (
+                                    <option
+                                        key={option.value}
+                                        value={option.value}
+                                        selected={option.value === formData[field.label]}  
+                                    >
                                         {option.label}
                                     </option>
                                 ))}

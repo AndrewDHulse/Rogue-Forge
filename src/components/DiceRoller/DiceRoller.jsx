@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import './DiceRoller.css'
 export default function DiceRoller({ user }) {
     const Roll = {
         D4: () => Math.floor(Math.random() * 4) + 1,
@@ -36,7 +36,7 @@ export default function DiceRoller({ user }) {
     
     return (
         <div>
-            <form id="diceRoll">
+            <form className="diceRoll">
                 <input
                     type="number"
                     id="diceQuantity"
@@ -55,11 +55,11 @@ export default function DiceRoller({ user }) {
                         </option>
                     ))}
                 </select>
-                <button id="diceRollButton" onClick={handleRoll}>
+                <button className="diceRollButton" onClick={handleRoll}>
                     Roll Em
                 </button>
             {diceRolled && (
-                <h1 id="rollOutput">
+                <h1 className="rollOutput">
                     Result for {rollQuantity} {selectedDice}: {totalRoll}
                 </h1>
             )}

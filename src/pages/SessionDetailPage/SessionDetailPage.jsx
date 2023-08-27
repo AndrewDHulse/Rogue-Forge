@@ -17,11 +17,14 @@ import CharacterSheetTemplateForm from "../../components/CharacterSheetTemplateF
 import CharacterSheetTemplate from "../../components/CharacterSheetTemplate/CharacterSheetTemplate";
 import CharacterSheet from "../../components/CharacterSheet/CharacterSheet";
 
+import './SessionDetailPage.css'
+
 export default function SessionDetailPage({ user, sessions }) {
     const { sessionId } = useParams();
     const [session, setSession] = useState(null);
     const [users, setUsers] = useState([]);
     const [templates, setTemplates] = useState([]);
+    const [areTemplatesLoading, setAreTemplatesLoading] = useState(true);
     const [characterSheets, setCharacterSheets] = useState([])
     const [formData, setFormData] = useState({
         characterName:'Adventurer'
@@ -51,7 +54,7 @@ export default function SessionDetailPage({ user, sessions }) {
     
                 const fetchedTemplates = await showTemplatesForSession(sessionId);
                 setTemplates(fetchedTemplates);
-                
+                setAreTemplatesLoading(false);
                 if (fetchedTemplates.length > 0) {
                     const firstTemplateFields = fetchedTemplates[0].fields;
                     const initialFormData = {
@@ -128,7 +131,7 @@ export default function SessionDetailPage({ user, sessions }) {
         <>
         {session ? (
         <>
-            <h1>{session.campaignName}'s detail page</h1>
+            <h1 className="campaign-name">{session.campaignName}</h1>
             <p>Game Master: {findUserNameById(users, session.DM)}</p>
             
             {/* {user.role === "DM" && (
@@ -141,16 +144,36 @@ export default function SessionDetailPage({ user, sessions }) {
                 <CharacterSheetTemplateForm sessionId={sessionId} />
             )} */}
             <CharacterSheetTemplateForm sessionId={sessionId} />
-            {templates.map((template, index) => (
-                <CharacterSheetTemplate
-                    key={template._id}
-                    template={template}
-                    handleCreateCharacterSheet={() => handleCreateCharacterSheet(template)}
-                    formData={formData} 
-                    handleChange={handleChange}
-                    sessionId={sessionId}
-                />
-            ))}
+            {areTemplatesLoading ? (
+                <p>Loading templates...</p>
+            ) : (
+                templates.map((template, index) => (
+                    <CharacterSheetTemplate
+                        key={template._id}
+                        template={{
+                            ...template,
+                            fields: template.fields.map(field => {
+                                if (field.dropdownOptionsArray) {
+                                    return {
+                                        ...field,
+                                        dropdownOptionsArray: field.dropdownOptionsArray.map(option => ({
+                                            ...option,
+                                            label: option.label.trim(),
+                                            value: option.value.trim()
+                                        }))
+                                    };
+                                } else {
+                                    return field;
+                                }
+                            })
+                        }}
+                        handleCreateCharacterSheet={() => handleCreateCharacterSheet(template)}
+                        formData={formData}
+                        handleChange={handleChange}
+                        sessionId={sessionId}
+                    />
+                ))
+            )}
             {characterSheets.map((characterSheet) => (
                         <CharacterSheet
                             key={characterSheet._id}

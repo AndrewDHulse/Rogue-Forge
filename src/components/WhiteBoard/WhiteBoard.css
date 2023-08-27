@@ -1,4 +1,5 @@
-.canvas{
-    border: solid black;
-    border-width: 1.5px;
+.canvas {
+    border: 7.5px outset rgb(180, 178, 178);
+    background-color: white;
+    z-index: 2;
 }
