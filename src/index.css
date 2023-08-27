@@ -14,7 +14,9 @@
   -webkit-text-size-adjust: 100%;
 }
 
-
+html, body, #root {
+  height: 100%;
+}
 
 a {
   font-weight: 500;
@@ -27,8 +29,7 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  padding: 0;
 }
 
 h1 {
