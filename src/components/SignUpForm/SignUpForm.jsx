@@ -3,7 +3,7 @@ import { signUp } from '../../utilities/users-service';
 import { useNavigate } from 'react-router-dom';
 import { showCharacterSheetsforUser } from '../../utilities/characterSheets-api';
 
-export default function SignUpForm({ }) {
+export default function SignUpForm({setUser }) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -23,17 +23,17 @@ export default function SignUpForm({ }) {
   const handleSubmit = async evt => {
     evt.preventDefault();
     try {
-      await signUp(formData);
-      showCharacterSheetsforUser(formData)
-      navigate('/');
+        await signUp(formData);
+        showCharacterSheetsforUser(formData);
+        setUser(formData); 
+        navigate('/');
     } catch (error) {
-      console.error('Error signing up:', error);
-      if (error.response) {
-        console.error('Response data:', error.response.data);
-      }
+        console.error('Error signing up:', error);
+        if (error.response) {
+            console.error('Response data:', error.response.data);
+        }
     }
-  };
-
+};
   return (
     <div>
       <h2>Sign Up</h2>

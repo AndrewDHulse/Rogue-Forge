@@ -5,7 +5,7 @@ import LoginForm from '../../components/LoginForm/LoginForm'
 
 
 export default function AuthPage({ setUser }) {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [showLogin, setShowLogin] = useState(true);
  
     return (
