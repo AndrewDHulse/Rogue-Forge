@@ -12,3 +12,7 @@ export async function getAllSessions(){
 export async function getById(id){
     return sendRequest(`${BASE_URL}/details/${id}`);
 }
+
+export async function deleteSession(id) {
+    return sendRequest(`${BASE_URL}/delete/${id}`, 'DELETE');
+}
