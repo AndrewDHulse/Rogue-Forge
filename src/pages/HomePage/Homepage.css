@@ -3,6 +3,16 @@
 }
 
 .section-head{
+    margin-top: 3vmin;
     font-family: 'Cinzel Decorative', cursive;
+    font-size: 1.75;
 }
 
+.body{
+    font-family: 'Goudy Bookletter 1911', serif;
+    font-size: 1.5rem;
+    width: 75%;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+}

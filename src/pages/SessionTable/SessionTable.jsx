@@ -1,11 +1,16 @@
 import WhiteBoard from '../../components/WhiteBoard/WhiteBoard'
 import DiceRoller from '../../components/DiceRoller/DiceRoller';
+import './SessionTable.css'
 export default function SessionTable(user){
-    console.log('user passed to session table', user)
     return(
-        <>
-            < WhiteBoard />
-            < DiceRoller user={user}/>
-        </>
+        <div className='page'>
+            <h1>A New Adventure</h1>
+            <div className='whiteboard'>
+                < WhiteBoard />
+            </div>
+            <div className='diceroller'>
+                < DiceRoller user={user}/>
+            </div>
+        </div>
     );
 }

@@ -1,5 +1,6 @@
 .diceRoller{
-    border: solid 5px 
+    border: solid 5px;
+    margin-top: 5vmin; 
 }
 .rollOutput{
     font-family: 'Goudy Bookletter 1911', serif;

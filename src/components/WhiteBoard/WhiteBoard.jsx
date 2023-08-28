@@ -68,8 +68,10 @@ export default function WhiteBoard(){
                 onMouseUp={handleMouseUp}
                 onMouseOut={handleMouseOut}
             ></canvas>
-            <Button variant="secondary" onClick={toggleEraser}>{isErasing ? 'DRAW' : 'ERASE'}</Button>
-            <Button variant="secondary" onClick={clearCanvas}>CLEAR</Button>
+            <div className="buttons">
+                <Button variant="secondary" onClick={toggleEraser}>{isErasing ? 'DRAW' : 'ERASE'}</Button>
+                <Button variant="secondary" onClick={clearCanvas}>CLEAR</Button>
+            </div>
         </div>
     )
 }
