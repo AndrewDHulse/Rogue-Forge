@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { signUp } from '../../utilities/users-service';
 import { useNavigate } from 'react-router-dom';
 import { showCharacterSheetsforUser } from '../../utilities/characterSheets-api';
-
+import { Button } from 'react-bootstrap';
 export default function SignUpForm({setUser }) {
   const [formData, setFormData] = useState({
     name: '',
@@ -70,7 +70,7 @@ export default function SignUpForm({setUser }) {
             <option value="DM">DM</option>
           </select>
         </div>
-        <button type="submit">Sign Up</button>
+        <Button variant="secondary" type="submit">Sign Up</Button>
       </form>
     </div>
   );

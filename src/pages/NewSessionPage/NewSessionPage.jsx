@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { createSession } from '../../utilities/sessions-api';
+import { createSession, getAllSessions } from '../../utilities/sessions-api';
 import { getUser } from '../../utilities/users-service';
 import CampaignNameField from '../../components/CampaignNameField/CampaignNameField';
 import SystemField from '../../components/SystemField/SystemField';
@@ -7,7 +7,7 @@ import PlayersField from '../../components/PlayersField/PlayersField';
 import { useNavigate } from 'react-router-dom';
 
 
-export default function NewSessionPage(){
+export default function NewSessionPage({setSessions}){
     const navigate= useNavigate();
     const currentUser= getUser()
     const [currentField, setCurrentField]=useState(0);
@@ -62,7 +62,9 @@ export default function NewSessionPage(){
         try{
             await createSession(sessionData);
             console.log('session creation successful')
-            navigate('/');
+            const fetchedSessions = await getAllSessions();
+            setSessions(fetchedSessions)
+            navigate('/sessions/index');
         }catch(err){
             console.log('failed to create new session',err)
         }

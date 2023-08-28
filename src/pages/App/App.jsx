@@ -38,8 +38,8 @@ export default function App() {
         <Route path="/sessions/table" element={<SessionTable user={user} />} />
         {user && (
           <>
-            <Route path="/sessions/new" element={<NewSessionPage />} />
-            <Route path="/sessions/index" element={<SessionIndex sessions={sessions} />} />
+            <Route path="/sessions/new" element={<NewSessionPage setSessions={setSessions} />} />
+            <Route path="/sessions/index" element={<SessionIndex sessions={sessions} setSessions={setSessions} />} />
             <Route path="/sessions/details/:sessionId" element={<SessionDetailPage sessions={sessions} user={user} />} />
             <Route path="/*" element={<Navigate to="/homepage" />} />
           </>

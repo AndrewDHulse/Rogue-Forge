@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
 import { getAllUsers } from '../../utilities/users-api';
+import { getAllSessions } from '../../utilities/sessions-api';
 import { findUserNameById } from '../../utilities/users-service';
 import { useState, useEffect } from 'react';
 import { Card } from 'react-bootstrap';
 import './SessionIndex.css';
 
-export default function SessionIndex({ sessions }) {
+export default function SessionIndex({ sessions, setSessions }) {
     console.log('sessions passed to sessionindex', sessions);
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -16,6 +17,8 @@ export default function SessionIndex({ sessions }) {
                 const fetchedUsers = await getAllUsers();
                 setUsers(fetchedUsers);
                 setIsLoading(false);
+                const fetchedSessions = await getAllSessions();
+                setSessions(fetchedSessions);
             } catch (error) {
                 console.error('Error fetching users:', error);
             }
