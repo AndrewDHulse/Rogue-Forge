@@ -1,5 +1,16 @@
 const mongoose = require('mongoose');
 
+const optionSchema = new mongoose.Schema({
+    label: {
+        type: String,
+        required: true,
+    },
+    value: {
+        type: String,
+        required: true,
+    },
+});
+
 const fieldSchema = new mongoose.Schema({
     label: {
         type: String,
@@ -9,7 +20,8 @@ const fieldSchema = new mongoose.Schema({
         type: String,
         required: true,
         enum: ['text', 'number', 'checkbox', 'dropdown'], // Might Change
-    }
+    },
+    options: [optionSchema]
 });
 
 const characterSheetTemplateSchema = new mongoose.Schema({

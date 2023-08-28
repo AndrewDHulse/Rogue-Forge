@@ -11,6 +11,7 @@ export default function CharacterSheetTemplate({
     onDeleteTemplate
 }) {
     console.log('Template', template)
+    console.log('Template Fields:')
     console.log('formdata', formData)
     const handleDeleteTemplate = async () => {
         try{
@@ -68,22 +69,22 @@ export default function CharacterSheetTemplate({
                             />
                         )}
                         {field.type === "dropdown" && (
-                        <select
-                            id={field._id}
-                            name={field.label}
-                            value={formData[field.label]}
-                            onChange={handleChange}
-                        >
-                            {field.dropdownOptionsArray.map((option) => (
-                                <option
-                                    key={option.value}
-                                    value={option.value}
-                                >
-                                    {option.label}
-                                </option>
-                            ))}
-                        </select>
-                    )}
+                            <select
+                                id={field._id}
+                                name={field.label}
+                                value={formData[field.label]}
+                                onChange={handleChange}
+                            >
+                                {field.options.map((option) => (
+                                    <option
+                                        key={option.value}
+                                        value={option.value}
+                                    >
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
+                        )}
                     </div>
                 ))}
                 <Button type="submit" variant="secondary" >Create Character Sheet</Button>

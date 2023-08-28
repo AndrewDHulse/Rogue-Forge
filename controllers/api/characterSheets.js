@@ -24,8 +24,21 @@ async function createTemplate(req, res) {
         const session = await Session.findById(req.params.sessionId);
         const templateData = {
             session: session._id,
-            fields: req.body.fields,
-            templateName: req.body.templateName
+            fields: req.body.fields.map(field => {
+                if (field.type === 'dropdown') {
+                    return {
+                        label: field.label,
+                        type: field.type,
+                        options: field.options,
+                    };
+                } else {
+                    return {
+                        label: field.label,
+                        type: field.type,
+                    };
+                }
+            }),
+            templateName: req.body.templateName,
         };
         const createdTemplate = await characterSheetTemplate.create(templateData);
         res.json(createdTemplate);
@@ -35,17 +48,24 @@ async function createTemplate(req, res) {
     }
 }
 
-async function showTemplate(req, res){
-    try{
-        const templateId = req.params.templateId;
-        const template = await characterSheetTemplate.findById(templateId);
-
-        if (!template) {
-            return res.status(404).json({ message: 'Template not found' });
-        }
-        res.json(template);
-    } catch(err){
-        console.log(err);
+async function showTemplate(templateId) {
+    try {
+        const template = await sendRequest(`${BASE_URL}/showTemplate/${templateId}`, 'GET');
+        const templateWithOptions = {
+            ...template,
+            fields: template.fields.map(field => {
+                if (field.type === 'dropdown') {
+                    field.dropdownOptionsArray = field.dropdownOptions.split(',').map(option => ({
+                        value: option.trim(),
+                        label: option.trim()
+                    }));
+                }
+                return field;
+            })
+        };
+        return templateWithOptions;
+    } catch (error) {
+        console.log(error);
         res.status(500).json({err: 'error while fetching template'})
     }
 }
@@ -58,11 +78,11 @@ async function createCharacterSheet(req, res) {
         }
 
         const values = template.fields.map(templateField => {
-            const value = req.body[templateField.label]; 
+            const value = templateField.type === 'dropdown' ? req.body[templateField.label].value : req.body[templateField.label];
             return {
-                field: new ObjectId (templateField._id), 
+                field: new ObjectId(templateField._id),
                 value: value
-        };
+            };
         });
 
         const formData = {
@@ -189,20 +209,19 @@ async function updateCharacterSheet(req, res) {
             return res.status(404).json({ message: 'Character sheet not found' });
         }
 
-        console.log('Received updated values:', updatedValues); // Add this line
+        console.log('Received updated values:', updatedValues);
 
         // Iterate through the updated values and update the corresponding fields in the character sheet
         for (const updatedField of updatedValues) {
             const { field, value } = updatedField;
-        
+
             // Find the field in the character sheet's values array using the `equals` method
             const existingField = characterSheet.values.find(f => f.field.equals(field));
-        
+
             if (existingField) {
                 // Update the field's value
-                existingField.value = value;
+                existingField.value = field.type === 'dropdown' ? value.value : value;
             } else {
-                // Handle the case where the field is not found (optional)
                 console.log(`Field ${field} not found in character sheet`);
             }
         }

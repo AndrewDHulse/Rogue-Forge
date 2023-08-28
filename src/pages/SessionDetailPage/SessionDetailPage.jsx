@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, Component } from "react";
 import { useParams } from "react-router-dom";
 import { getById } from "../../utilities/sessions-api";
 import { getAllUsers } from "../../utilities/users-api";
@@ -19,6 +19,7 @@ import CharacterSheetTemplate from "../../components/CharacterSheetTemplate/Char
 import CharacterSheet from "../../components/CharacterSheet/CharacterSheet";
 import { Tabs, Tab, Button, Modal, Container, Row, Col } from 'react-bootstrap';
 import './SessionDetailPage.css';
+import ErrorBoundary from "../../ErrorBoundary";
 
 export default function SessionDetailPage({ user, sessions }) {
     const { sessionId } = useParams();
@@ -58,6 +59,7 @@ export default function SessionDetailPage({ user, sessions }) {
                 setUsers(fetchedUsers);
     
                 const fetchedTemplates = await showTemplatesForSession(sessionId);
+                console.log('Fetched templates:', fetchedTemplates)
                 templatesRef.current = fetchedTemplates; 
                 setTemplates(fetchedTemplates);
                 setAreTemplatesLoading(false);
@@ -226,11 +228,13 @@ export default function SessionDetailPage({ user, sessions }) {
                 Create a Character Sheet
                 </Modal.Header>
                 <Modal.Body>
+                    <ErrorBoundary>
                 <CharacterSheetTemplateForm 
                 sessionId={sessionId} 
                 onClose={handleCloseCreateTemplate} 
                 onSubmit={handleTemplateFormSubmit}
                 />
+                </ErrorBoundary>
                 </Modal.Body>
             </Modal>
         
@@ -251,31 +255,33 @@ export default function SessionDetailPage({ user, sessions }) {
                         title={template.templateName}
                         key={template._id}
                         >
-                        <CharacterSheetTemplate
-                            onClose={handleCloseShowTemplate}
-                            onDeleteTemplate={() => handleDeleteTemplate(template._id)}
-                            template={{
+                            <ErrorBoundary>
+                    <CharacterSheetTemplate
+                        onClose={handleCloseShowTemplate}
+                        onDeleteTemplate={() => handleDeleteTemplate(template._id)}
+                        template={{
                             ...template,
-                            fields: template.fields.map(field => {
+                            fields: (template.fields || []).map(field => {
                                 if (field.dropdownOptionsArray) {
-                                return {
-                                    ...field,
-                                    dropdownOptionsArray: field.dropdownOptionsArray.map(option => ({
-                                    ...option,
-                                    label: option.label.trim(),
-                                    value: option.value.trim()
-                                    }))
-                                };
+                                    return {
+                                        ...field,
+                                        dropdownOptionsArray: (field.dropdownOptionsArray || []).map(option => ({
+                                            ...option,
+                                            label: option.label.trim(),
+                                            value: option.value.trim()
+                                        }))
+                                    };
                                 } else {
-                                return field;
+                                    return field;
                                 }
                             })
-                            }}
-                            handleCreateCharacterSheet={() => handleCreateCharacterSheet(template)}
-                            formData={formData}
-                            handleChange={handleChange}
-                            sessionId={sessionId}
-                        />
+                        }}
+                        handleCreateCharacterSheet={() => handleCreateCharacterSheet(template)}
+                        formData={formData}
+                        handleChange={handleChange}
+                        sessionId={sessionId}
+                    />
+                        </ErrorBoundary>
                         </Tab>
                     ))
                     )}
