@@ -4,9 +4,10 @@ import DropdownField from "../DropdownField/DropdownField";
 import TextFieldWithValue from "../TextFieldWithValue/TextFieldWithValue";
 import CheckboxFieldWithValue from "../CheckboxFieldWithValue/CheckBoxFieldWithValue";
 import NumberFieldWithValue from "../NumberFieldWithValue/NumberFieldWithValue";
+import { findUserNameById } from "../../utilities/users-service";
 import {Button} from 'react-bootstrap'
-
-export default function CharacterSheet({ user, characterSheet }) {
+import './CharacterSheet.css'
+export default function CharacterSheet({ user, characterSheet, onDeleteCharacterSheet }) {
     const [template, setTemplate] = useState(null);
     const [fieldData, setFieldData] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
@@ -54,16 +55,6 @@ export default function CharacterSheet({ user, characterSheet }) {
     }, [characterSheet]);
 
     
-    const handleDeleteCharacterSheet = async () => {
-        try {
-            console.log('delete character sheet with ID:', characterSheet._id);
-            const response = await deleteCharacterSheet(characterSheet._id);
-            console.log('Delete Response:', response);
-        } catch (err) {
-            console.log('Error deleting character sheet', err);
-        }
-    };
-    
     const handleUpdateCharacterSheet = async () => {
         try {
             console.log('Updating character sheet with ID:', characterSheet._id);
@@ -80,6 +71,7 @@ export default function CharacterSheet({ user, characterSheet }) {
             console.log('Updated character sheet data:', updatedCharacterSheet);
     
             const response = await updateCharacterSheet(characterSheet._id, updatedCharacterSheet);
+            setCharacterSheets(updatedCharacterSheets);
             console.log('Update Response:', response);
         } catch (err) {
             console.log('Error updating character sheet', err);
@@ -151,9 +143,9 @@ export default function CharacterSheet({ user, characterSheet }) {
                     );
                 })}
             </ul>
-            <Button variant="secondary" onClick={handleDeleteCharacterSheet}>Delete Character Sheet</Button>
-            <Button variant="secondary" onClick={handleToggleEdit}>Toggle Edit Mode</Button>
-            <Button variant="secondary" onClick={handleUpdateCharacterSheet}>Update Character Sheet</Button>
+            <Button variant="secondary" size="sm" onClick={()=>onDeleteCharacterSheet(characterSheet._id)}>Delete</Button>
+            <Button variant="secondary" size="sm" onClick={handleToggleEdit}>Toggle Edit Mode</Button>
+            <Button variant="secondary" size="sm" onClick={handleUpdateCharacterSheet}>Update Character Sheet</Button>
         </div>
     );
 }

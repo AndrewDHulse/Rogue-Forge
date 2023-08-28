@@ -2,3 +2,27 @@
     font-family: 'Eagle Lake', cursive;
 }
 
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 0; 
+    height: 100%;
+    overflow-x: hidden;
+    transition: 0.3s;
+    box-shadow: -2px 0px 5px rgba(230, 228, 228, 0.1);
+}
+
+.sidebar-expanded {
+width: 300px; 
+background-color: ;
+}
+
+.main-content {
+margin-right: 0; 
+transition: 0.3s;
+}
+
+.main-content-expanded {
+margin-right: 300px; 
+}
