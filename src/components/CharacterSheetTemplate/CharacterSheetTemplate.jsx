@@ -68,23 +68,22 @@ export default function CharacterSheetTemplate({
                             />
                         )}
                         {field.type === "dropdown" && (
-                            <select 
-                                id={field._id}
-                                name={field.label} 
-                                value={formData[field.label]}  
-                                onChange={handleChange}
-                            >
-                                {field.dropdownOptionsArray.map((option) => (
-                                    <option
-                                        key={option.value}
-                                        value={option.value}
-                                        selected={option.value === formData[field.label]}  
-                                    >
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
-                        )}
+                        <select
+                            id={field._id}
+                            name={field.label}
+                            value={formData[field.label]}
+                            onChange={handleChange}
+                        >
+                            {field.dropdownOptionsArray.map((option) => (
+                                <option
+                                    key={option.value}
+                                    value={option.value}
+                                >
+                                    {option.label}
+                                </option>
+                            ))}
+                        </select>
+                    )}
                     </div>
                 ))}
                 <Button type="submit" variant="secondary" >Create Character Sheet</Button>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import * as usersAPI from '../../utilities/users-api';
+import { Button } from 'react-bootstrap';
 
 export default function PlayersField({ onChange }) {
     const [allUsers, setAllUsers] = useState([]);
@@ -49,9 +50,9 @@ export default function PlayersField({ onChange }) {
                     </select>
                 </div>
             ))}
-            <button type="button" onClick={handleAddPlayer}>
+            <Button variant='secondary' type="button" onClick={handleAddPlayer}>
                 Add Player
-            </button>
+            </Button>
         </div>
     );
 }

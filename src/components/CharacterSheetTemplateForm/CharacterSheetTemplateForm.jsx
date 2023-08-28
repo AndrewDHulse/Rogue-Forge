@@ -99,8 +99,6 @@ export default function CharacterSheetTemplateForm({ sessionId, onClose, onSubmi
                                 const updatedField = { ...field, dropdownOptions: options.map(option => option.value).join(', '), dropdownOptionsArray: options };
                                 handleFieldChange(index, updatedField);
                             }}
-                            onAddOption={() => onAddDropdownOption(index)}
-                            onOptionChange={(optionIndex, updatedOption) => onDropdownOptionChange(index, optionIndex, updatedOption)}
                             />
                             )}
                     </div>

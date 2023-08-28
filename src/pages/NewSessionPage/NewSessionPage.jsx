@@ -5,7 +5,7 @@ import CampaignNameField from '../../components/CampaignNameField/CampaignNameFi
 import SystemField from '../../components/SystemField/SystemField';
 import PlayersField from '../../components/PlayersField/PlayersField';
 import { useNavigate } from 'react-router-dom';
-
+import { Button } from 'react-bootstrap';
 
 export default function NewSessionPage({setSessions}){
     const navigate= useNavigate();
@@ -78,13 +78,13 @@ export default function NewSessionPage({setSessions}){
                     value={sessionData[formFields[currentField].field]}
                     onChange={handleFieldChange}
                 />
-                <button onClick={goToPreviousField} disabled={currentField ===0}>
+                <Button variant='secondary' onClick={goToPreviousField} disabled={currentField ===0}>
                     Previous
-                </button>
-                <button type="submit">Submit</button>
-                <button onClick={goToNextField} disabled={currentField === formFields.length -1}>
+                </Button>
+                <Button variant='secondary' type="submit">Submit</Button>
+                <Button variant='secondary' onClick={goToNextField} disabled={currentField === formFields.length -1}>
                     Next
-                </button>
+                </Button>
             </form>
         </>
     )
