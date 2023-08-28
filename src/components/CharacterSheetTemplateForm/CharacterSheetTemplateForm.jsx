@@ -8,7 +8,7 @@ import TextField from "../TextField/TextField";
 import {Button} from 'react-bootstrap'
 import './CharacterSheetTemplateForm.css'
 
-export default function CharacterSheetTemplateForm({ sessionId, onClose}){
+export default function CharacterSheetTemplateForm({ sessionId, onClose, onSubmit }){
     const [fields, setFields] = useState([]);
     const [templateName, setTemplateName] = useState('');
 
@@ -46,7 +46,7 @@ export default function CharacterSheetTemplateForm({ sessionId, onClose}){
                 templateName: templateName, 
                 fields: fields,
             };
-            await createTemplate(sessionId, templateData);
+            await onSubmit(templateData);
             onClose()
         }catch(err){
             console.log(err)

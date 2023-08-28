@@ -7,7 +7,9 @@ import {
     showTemplatesForSession, 
     createCharacterSheet, 
     showCharacterSheetsforUser ,
-    deleteCharacterSheet
+    deleteCharacterSheet,
+    createTemplate,
+    deleteTemplate
 } from "../../utilities/characterSheets-api";
 
 import WhiteBoard from "../../components/WhiteBoard/WhiteBoard";
@@ -37,6 +39,7 @@ export default function SessionDetailPage({ user, sessions }) {
     const [sidebarExpanded, setSidebarExpanded] = useState(false);
 
     const characterSheetsRef = useRef(characterSheets);
+    const templatesRef = useRef([]);
 
     const handleChange = (evt) => {
         const { name, value } = evt.target;
@@ -55,6 +58,7 @@ export default function SessionDetailPage({ user, sessions }) {
                 setUsers(fetchedUsers);
     
                 const fetchedTemplates = await showTemplatesForSession(sessionId);
+                templatesRef.current = fetchedTemplates; 
                 setTemplates(fetchedTemplates);
                 setAreTemplatesLoading(false);
                 if (fetchedTemplates.length > 0) {
@@ -68,12 +72,11 @@ export default function SessionDetailPage({ user, sessions }) {
                     };
                     setFormData(initialFormData);
                 }
-    
             } catch (err) {
                 console.log('Error fetching session details', err);
             }
         }
-        fetchSessionDetails();
+        fetchSessionDetails(); 
     }, [sessionId]);
 
     useEffect(() => {
@@ -146,6 +149,28 @@ export default function SessionDetailPage({ user, sessions }) {
         }
     };
 
+    const handleTemplateFormSubmit = async (templateData) =>{
+        try {
+            await createTemplate(sessionId, templateData);
+            const updatedTemplates = await showTemplatesForSession(sessionId);
+            setTemplates(updatedTemplates);
+
+            handleCloseCreateTemplate();
+        }catch(err){
+            console.log(err)
+        }
+    };
+
+    const handleDeleteTemplate= async (templateId)=>{
+        try{
+            await deleteTemplate(templateId);
+            const updatedTemplates = templates.filter(template => template._id !== templateId)
+            setTemplates(updatedTemplates);
+        }catch(err){
+            console.log('Error deleting template:', err)
+        }
+    }
+
         return (
             <Container fluid className={`main-content ${sidebarExpanded ? 'main-content-expanded' : ''}`}>
             {session ? (
@@ -201,7 +226,11 @@ export default function SessionDetailPage({ user, sessions }) {
                 Create a Character Sheet
                 </Modal.Header>
                 <Modal.Body>
-                <CharacterSheetTemplateForm sessionId={sessionId} onClose={handleCloseCreateTemplate} />
+                <CharacterSheetTemplateForm 
+                sessionId={sessionId} 
+                onClose={handleCloseCreateTemplate} 
+                onSubmit={handleTemplateFormSubmit}
+                />
                 </Modal.Body>
             </Modal>
         
@@ -224,6 +253,7 @@ export default function SessionDetailPage({ user, sessions }) {
                         >
                         <CharacterSheetTemplate
                             onClose={handleCloseShowTemplate}
+                            onDeleteTemplate={() => handleDeleteTemplate(template._id)}
                             template={{
                             ...template,
                             fields: template.fields.map(field => {

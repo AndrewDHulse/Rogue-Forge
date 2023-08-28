@@ -7,13 +7,14 @@ export default function CharacterSheetTemplate({
     formData,
     handleChange,
     sessionId={sessionId},
-    onClose
+    onClose,
+    onDeleteTemplate
 }) {
     console.log('Template', template)
     console.log('formdata', formData)
     const handleDeleteTemplate = async () => {
         try{
-            const response = await deleteTemplate(template._id);
+            onDeleteTemplate()
             console.log('Delete Response', response);
             onClose()
         }catch (err){
