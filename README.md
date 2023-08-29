@@ -144,7 +144,9 @@ Features planned to be added at a later time include:
 - Premade templates for popular TTRPGs such as Pathfinder and Dungeons and Dragons 5E
 - Popular systems ruleset to impact dice rolls
 - A "Fudge Roll" feature for DMs
-
+- Protected Routes for DMs
+- Add and remove players to campaigns 
+- Only players in the campaign can interact
 
 
 ## Known Issues
