@@ -98,7 +98,6 @@ Rogue Forge features dynamic Character Sheet creation, handles by the dynamic an
 Included is a live preview section, so DM's can see just what their players will see.
 ```
             {/* Preview section */}
-            <div style={{ border: "1px solid #ccc", padding: "10px" }}>
                 <h2>Preview</h2>
                 <hr />
                 <h3 className="preview-template-name">{templateName}</h3>
@@ -145,4 +144,5 @@ Features planned to be added at a later time include:
 
 ## Known Issues
 
-Currently When creating a character, selecting from the dropdown menu or checking the checkbox does not save, and the user must update these values from the edit function. 
+- Currently, when creating a character, selecting from the dropdown menu or checking the checkbox does not save, and the user must update these values from the edit function.
+- The label for dropdown fields does not render in the preview. 
