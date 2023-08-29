@@ -25,6 +25,7 @@ async function createTemplate(req, res) {
         const templateData = {
             session: session._id,
             fields: req.body.fields.map(field => {
+                console.log('field in createTemplate:',field)
                 if (field.type === 'dropdown') {
                     return {
                         label: field.label,

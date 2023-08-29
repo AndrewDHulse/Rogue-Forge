@@ -210,6 +210,7 @@ export default function SessionDetailPage({ user, sessions }) {
                             title={characterSheet.characterName}
                             key={characterSheet._id}
                         >
+                            <ErrorBoundary>
                             <CharacterSheet
                                 key={characterSheet._id}
                                 characterSheet={characterSheet}
@@ -217,6 +218,7 @@ export default function SessionDetailPage({ user, sessions }) {
                                 characterSheets={characterSheets}
                                 onDeleteCharacterSheet={onDeleteCharacterSheet}
                             />
+                            </ErrorBoundary>
                         </Tab>
                     ))}
                 </Tabs>

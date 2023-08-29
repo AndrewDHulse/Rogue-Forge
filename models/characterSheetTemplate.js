@@ -7,7 +7,6 @@ const optionSchema = new mongoose.Schema({
     },
     value: {
         type: String,
-        required: true,
     },
 });
 

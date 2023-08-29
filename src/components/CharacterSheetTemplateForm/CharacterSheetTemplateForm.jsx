@@ -24,11 +24,9 @@ export default function CharacterSheetTemplateForm({ sessionId, onClose, onSubmi
         const updatedFields = [...fields];
     
         if (updatedField.type === "dropdown") {
-            const dropdownOptionsArray = updatedField.dropdownOptionsArray.map(option => option.value).join(', ');
             updatedFields[index] = {
                 ...updatedField,
-                dropdownOptions: dropdownOptionsArray,
-                dropdownOptionsArray: updatedField.dropdownOptionsArray,
+                dropdownOptionsArray: updatedField.dropdownOptionsArray, 
             };
         } else {
             updatedFields[index] = updatedField;
@@ -49,6 +47,7 @@ export default function CharacterSheetTemplateForm({ sessionId, onClose, onSubmi
                 templateName: templateName, 
                 fields: fields,
             };
+            console.log('template data, handlesubmit:', templateData)
             await onSubmit(templateData);
             onClose()
         }catch(err){
@@ -126,14 +125,11 @@ export default function CharacterSheetTemplateForm({ sessionId, onClose, onSubmi
                                     setFields(updatedFields);
                                 }}
                             >
-                                {field.dropdownOptionsArray.map((option) => (
-                                    <option
-                                        key={option.value}
-                                        value={option.value}
-                                    >
-                                        {option.label}
-                                    </option>
-                                ))}
+                            {field.dropdownOptionsArray.map((option, optionIndex) => (
+                            <option key={optionIndex} value={option.value}>
+                                {option.label}
+                            </option>
+                            ))}
                             </select>
                         )}
                     </div>
