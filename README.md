@@ -4,12 +4,16 @@ A web application for managing character sheets for tabletop role-playing games 
 
 ## Table of Contents
 
+- [Technologies Used](#technologies-used)
 - [Description](#description)
 - [Features](#features)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
 - [Usage](#usage)
+- [Code Preview](#code-preview)
+- [Icebox Features](#icebox-features)
+- [Known Issues](#known-issues)
 
 ## Technologies Used
 
@@ -124,3 +128,21 @@ Included is a live preview section, so DM's can see just what their players will
                         )}
                     </div>
 ```
+## Icebox Features 
+
+Features planned to be added at a later time include:
+- Implementation of socket.io
+- Ability to save whiteboard
+- Optional grid for whiteboard
+- Ability to upload a map to the whiteboard
+- Tokens for charcters on the whiteboard
+- Hide character sheets from players, visible only to DM
+- Premade templates for popular TTRPGs such as Pathfinder and Dungeons and Dragons 5E
+- Popular systems ruleset to impact dice rolls
+- A "Fudge Roll" feature for DMs
+
+
+
+## Known Issues
+
+Currently When creating a character, selecting from the dropdown menu or checking the checkbox does not save, and the user must update these values from the edit function. 

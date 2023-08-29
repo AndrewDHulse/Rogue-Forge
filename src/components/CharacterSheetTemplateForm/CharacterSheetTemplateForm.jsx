@@ -105,6 +105,11 @@ export default function CharacterSheetTemplateForm({ sessionId, onClose, onSubmi
             <h2>Preview</h2>
             <hr/>
                 <h3 className="preview-template-name">{templateName}</h3>
+                <label htmlFor="name">Name:</label>
+                <input
+                    type="text"
+                    name="name"
+                />
                 {fields.map((field, index) => (
                     <div key={index}>
                         <hr/>

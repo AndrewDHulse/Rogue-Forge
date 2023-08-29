@@ -1,10 +1,9 @@
-import { showCharacterSheetsforUser, getField, deleteCharacterSheet, updateCharacterSheet } from "../../utilities/characterSheets-api";
+import { getField, updateCharacterSheet } from "../../utilities/characterSheets-api";
 import { useState, useEffect } from "react";
 import DropdownFieldWithValues from "../DropdownFieldWithValues/DropdownFieldWithValues";
 import TextFieldWithValue from "../TextFieldWithValue/TextFieldWithValue";
 import CheckboxFieldWithValue from "../CheckboxFieldWithValue/CheckBoxFieldWithValue";
 import NumberFieldWithValue from "../NumberFieldWithValue/NumberFieldWithValue";
-import { findUserNameById } from "../../utilities/users-service";
 import {Button} from 'react-bootstrap'
 import './CharacterSheet.css'
 export default function CharacterSheet({ user, characterSheet, onDeleteCharacterSheet }) {
@@ -87,7 +86,7 @@ export default function CharacterSheet({ user, characterSheet, onDeleteCharacter
 
     return (
         <div>
-            <h3>{characterSheet.characterName}</h3>
+            <h2>{characterSheet.characterName}</h2>
             <p>Template: {template.templateName}</p>
             <ul>
                 {fieldData.map((fieldInfo) => {
@@ -98,7 +97,7 @@ export default function CharacterSheet({ user, characterSheet, onDeleteCharacter
                             <hr/>
                             {fieldType === 'checkbox' && (
                                 <CheckboxFieldWithValue
-                                label={fieldData.label}
+                                label={<label className="charactersheetlabel">{fieldData.label}</label>}
                                 value={value}
                                 disabled={!isEditing}
                                 onChange={(newValue) => handleFieldChange(field, newValue)}
@@ -106,7 +105,7 @@ export default function CharacterSheet({ user, characterSheet, onDeleteCharacter
                             )}
                             {fieldType === 'text' && (
                                 <TextFieldWithValue
-                                    label={fieldData.label}
+                                    label={<label className="charactersheetlabel">{fieldData.label}</label>}
                                     value={value}
                                     disabled={!isEditing}
                                     onChange={(newValue) => handleFieldChange(field, newValue)}
@@ -114,7 +113,7 @@ export default function CharacterSheet({ user, characterSheet, onDeleteCharacter
                             )}
                             {fieldType === 'number' && (
                                 <NumberFieldWithValue
-                                    label={fieldData.label}
+                                    label={<label className="charactersheetlabel">{fieldData.label}</label>}
                                     value={value}
                                     disabled={!isEditing}
                                     onChange={(newValue) => handleFieldChange(field, newValue)}
@@ -122,7 +121,7 @@ export default function CharacterSheet({ user, characterSheet, onDeleteCharacter
                             )}
                             {fieldType === 'dropdown' && (
                                 <DropdownFieldWithValues
-                                    label={fieldData.label}
+                                    label={<label className="charactersheetlabel">{fieldData.label}</label>}
                                     value={value}
                                     options={fieldData.options}
                                     disabled={!isEditing}
