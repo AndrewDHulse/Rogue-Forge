@@ -1,6 +1,6 @@
 # Rogue Forge
 
-A web application for managing character sheets for tabletop role-playing games (RPGs).
+A web application for managing character sheets for tabletop role-playing games (TTRPGs).
 
 ## Table of Contents
 
@@ -14,19 +14,28 @@ A web application for managing character sheets for tabletop role-playing games 
 - [License](#license)
 - [Contact](#contact)
 
+## Technologies Used
+
+[![React-BootStrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)](https://react-bootstrap.netlify.app/)
+[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://www.w3.org/Style/CSS/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Express JS](https://img.shields.io/badge/Express%20js-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
+[![Node JS](https://img.shields.io/badge/Node%20js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/en)
+
 ## Description
 
-The Character Sheet Manager is a tool designed to help Game Masters (GMs) and players of tabletop RPGs manage and organize character sheets for their campaigns. It allows users to create custom character sheet templates, fill in character information, and view character details during gameplay.
+Rogue Forge is a tool designed to help Game Masters (GMs) and players of tabletop RPGs manage and organize character sheets for their campaigns. It allows users to create custom character sheet templates, fill in character information, and view character details during gameplay.
 
 ## Features
 
-- Create and manage character sheet templates with various field types (text, number, checkbox, and soon to come-dropdown).
+- Create and manage character sheet templates with various field types (text, number, checkbox, and dropdowns).
 - Generate character sheets based on selected templates and fill in character information.
 - Easy Collaboration through a virtual whiteboard for dice rolling and note-taking.
 - Responsive and user-friendly interface for both GMs and players.
 
 ## Getting Started
-
+Click <a href=https://rogueforge-2c9bd98b583a.herokuapp.com>this link</a> to see live deployment
 ### Prerequisites
 
 - Node.js and npm (Node Package Manager)
