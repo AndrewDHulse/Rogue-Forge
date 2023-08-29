@@ -44,11 +44,12 @@ export default function SessionDetailPage({ user, sessions }) {
 
     const handleChange = (evt) => {
         const { name, value } = evt.target;
+        console.log("Field Change:", name, value); // Add this to see field changes
         setFormData((prevFormData) => ({
-            ...prevFormData,
-            [name]: value,
+          ...prevFormData,
+          [name]: value,
         }));
-    };
+      };
     useEffect(() => {
         async function fetchSessionDetails() {
             try {
@@ -100,8 +101,8 @@ export default function SessionDetailPage({ user, sessions }) {
 
     const handleCreateCharacterSheet = async (template) => { 
         try {
-            console.log("Creating character sheet...");
-    
+            console.log("Creating character sheet with template:", template);
+
             const updatedFormData = {
                 ...formData,
                 characterName: formData.characterName,

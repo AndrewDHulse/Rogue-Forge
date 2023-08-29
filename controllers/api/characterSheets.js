@@ -25,12 +25,14 @@ async function createTemplate(req, res) {
         const templateData = {
             session: session._id,
             fields: req.body.fields.map(field => {
-                console.log('field in createTemplate:',field)
                 if (field.type === 'dropdown') {
                     return {
                         label: field.label,
                         type: field.type,
-                        options: field.options,
+                        options: field.dropdownOptionsArray.map(option => ({
+                            label: option.label,
+                            value: option.value,
+                        })),
                     };
                 } else {
                     return {
@@ -48,7 +50,6 @@ async function createTemplate(req, res) {
         res.status(500).json({ err: 'Internal server error' });
     }
 }
-
 async function showTemplate(templateId) {
     try {
         const template = await sendRequest(`${BASE_URL}/showTemplate/${templateId}`, 'GET');
@@ -70,7 +71,6 @@ async function showTemplate(templateId) {
         res.status(500).json({err: 'error while fetching template'})
     }
 }
-
 async function createCharacterSheet(req, res) {
     try {
         const template = await characterSheetTemplate.findById(req.params.templateId);
@@ -79,9 +79,17 @@ async function createCharacterSheet(req, res) {
         }
 
         const values = template.fields.map(templateField => {
-            const value = templateField.type === 'dropdown' ? req.body[templateField.label].value : req.body[templateField.label];
+            let value;
+            if (templateField.type === 'dropdown') {
+                const selectedOptionLabel = req.body[templateField.label];
+                const selectedOption = templateField.options.find(option => option.label === selectedOptionLabel);
+                value = selectedOption ? selectedOption.value : null;
+            } else {
+                value = req.body[templateField.label];
+            }
+
             return {
-                field: new ObjectId(templateField._id),
+                field: templateField._id,
                 value: value
             };
         });

@@ -1,6 +1,6 @@
 import { showCharacterSheetsforUser, getField, deleteCharacterSheet, updateCharacterSheet } from "../../utilities/characterSheets-api";
 import { useState, useEffect } from "react";
-import DropdownField from "../DropdownField/DropdownField";
+import DropdownFieldWithValues from "../DropdownFieldWithValues/DropdownFieldWithValues";
 import TextFieldWithValue from "../TextFieldWithValue/TextFieldWithValue";
 import CheckboxFieldWithValue from "../CheckboxFieldWithValue/CheckBoxFieldWithValue";
 import NumberFieldWithValue from "../NumberFieldWithValue/NumberFieldWithValue";
@@ -132,13 +132,14 @@ export default function CharacterSheet({ user, characterSheet, onDeleteCharacter
                                 />
                             )}
                             {fieldType === 'dropdown' && (
-                                <DropdownField
+                                <DropdownFieldWithValues
                                     label={fieldData.label}
                                     value={value}
+                                    options={fieldData.options}
                                     disabled={!isEditing}
                                     onChange={(newValue) => handleFieldChange(field, newValue)}
-                            />
-                        )}
+                                />
+                            )}
                         </li>
                     );
                 })}

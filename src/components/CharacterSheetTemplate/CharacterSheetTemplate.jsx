@@ -11,7 +11,7 @@ export default function CharacterSheetTemplate({
     onDeleteTemplate,
     dropdownOptionsArray
 }) {
-    console.log('Template', template)
+    console.log('Template data in charactersheettemplate', template)
     console.log('Template Fields:')
     console.log('formdata', formData)
     console.log('Dropdown Options Array:', dropdownOptionsArray);
