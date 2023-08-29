@@ -11,14 +11,9 @@ export default function CharacterSheetTemplate({
     onDeleteTemplate,
     dropdownOptionsArray
 }) {
-    console.log('Template data in charactersheettemplate', template)
-    console.log('Template Fields:')
-    console.log('formdata', formData)
-    console.log('Dropdown Options Array:', dropdownOptionsArray);
     const handleDeleteTemplate = async () => {
         try{
             onDeleteTemplate()
-            console.log('Delete Response', response);
             onClose()
         }catch (err){
             console.log('error deleting template', err)
@@ -39,7 +34,6 @@ export default function CharacterSheetTemplate({
                     onChange={handleChange}
                     required
                     />
-                {(console.log('Template in CharacterSheetTemplate:', template))}
                 {template.fields.map((field) => (
                     <div key={field._id}>
                         <hr/>
@@ -76,10 +70,10 @@ export default function CharacterSheetTemplate({
                             value={formData[field.label]}
                             onChange={handleChange}
                         >
-                            {field.options.map((option) => (
+                            {field.options.map((option, index) => (
                             <option
-                                key={option.value}
-                                value={option.value}
+                                key={index}
+                                value={index}
                             >
                                 {option.label}
                             </option>

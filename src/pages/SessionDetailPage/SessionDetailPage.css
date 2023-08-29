@@ -26,3 +26,21 @@ transition: 0.3s;
 .main-content-expanded {
 margin-right: 300px; 
 }
+
+.buttons-row {
+    display: flex;
+    gap: 10px; 
+    justify-content: center; 
+    margin-bottom: 10px;
+    margin-top: 10px 
+}
+
+.floating-button {
+    position: relative;
+    z-index: 1000; 
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.floating-button.expanded {
+    background-color: #6b6b6b;
+}

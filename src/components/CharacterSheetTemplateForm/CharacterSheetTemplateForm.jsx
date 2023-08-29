@@ -17,7 +17,6 @@ export default function CharacterSheetTemplateForm({ sessionId, onClose, onSubmi
             ...fields, 
             {label: '', type: 'text', dropdownOptionsArray: []}
         ]);
-        console.log('Fields after adding:', fields)
     };
 
     const handleFieldChange = (index, updatedField) => {
@@ -33,7 +32,6 @@ export default function CharacterSheetTemplateForm({ sessionId, onClose, onSubmi
         }
     
         setFields(updatedFields);
-        console.log('Fields after updating:', fields);
     };
 
     const handleTemplateNameChange = (evt) => {
@@ -47,7 +45,6 @@ export default function CharacterSheetTemplateForm({ sessionId, onClose, onSubmi
                 templateName: templateName, 
                 fields: fields,
             };
-            console.log('template data, handlesubmit:', templateData)
             await onSubmit(templateData);
             onClose()
         }catch(err){

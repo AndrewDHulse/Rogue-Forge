@@ -1,3 +1,50 @@
 .brand {
     font-family: 'Eagle Lake', cursive;
+    height: 150px;
+    width: 150px;
+    border: 10px solid rgb(192, 192, 192);
+    border-radius: 20% 20% 50% 50% / 6% 6% 88% 88%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transition: transform 0.2s ease;
+}
+
+.navbar-brand:hover {
+    transform: scale(1.05);
+
+    color: #fff;
+}
+
+.brand::after {
+    content: "RF";
+    position: absolute;
+    font-size: 5rem;
+    color: rgb(192, 192, 192);
+}
+
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+.nav-link {
+    padding: 10px 20px;
+    margin-top: 10px;
+    display: block;
+    text-align: center;
+}
+
+.nav-link.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-weight: bold;
+}
+
+.welcome-user{
+    margin-top: 10px;
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: larger;
 }

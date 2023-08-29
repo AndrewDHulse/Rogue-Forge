@@ -1,11 +1,6 @@
-const User = require('../../models/user')
 const Session = require('../../models/session')
 const CharacterSheet = require('../../models/characterSheet')
 const characterSheetTemplate = require('../../models/characterSheetTemplate')
-const characterSheet = require('../../models/characterSheet')
-const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
-
 
 module.exports={
     createTemplate,
@@ -152,21 +147,14 @@ async function showCharacterSheetsforUser(req, res) {
 async function getField(req, res) {
     try {
         const templateFieldId = req.params.templateFieldId;
-
-        // Find the template that contains my fields
         const template = await characterSheetTemplate.findOne({ "fields._id": templateFieldId });
-
         if (!template) {
             return res.status(404).json({ message: 'Field not found' });
         }
-
-        // Find tfield within  templates fields array
         const field = template.fields.find(field => field._id.toString() === templateFieldId);
-
         if (!field) {
             return res.status(404).json({ message: 'Field not found' });
         }
-
         res.json(field);
     } catch(err) {
         console.log(err);
@@ -209,35 +197,22 @@ async function deleteCharacterSheet(req, res) {
 async function updateCharacterSheet(req, res) {
     try {
         const characterSheetId = req.params.characterSheetId;
-        const updatedValues = req.body.values; // Array of updated field values
-
-        // Find the character sheet by ID
+        const updatedValues = req.body.values;
         const characterSheet = await CharacterSheet.findById(characterSheetId);
 
         if (!characterSheet) {
             return res.status(404).json({ message: 'Character sheet not found' });
         }
-
-        console.log('Received updated values:', updatedValues);
-
-        // Iterate through the updated values and update the corresponding fields in the character sheet
         for (const updatedField of updatedValues) {
             const { field, value } = updatedField;
-
-            // Find the field in the character sheet's values array using the `equals` method
             const existingField = characterSheet.values.find(f => f.field.equals(field));
-
             if (existingField) {
-                // Update the field's value
                 existingField.value = field.type === 'dropdown' ? value.value : value;
             } else {
                 console.log(`Field ${field} not found in character sheet`);
             }
         }
-
-        // Save the updated character sheet
         const updatedCharacterSheet = await characterSheet.save();
-
         res.json(updatedCharacterSheet);
     } catch (err) {
         console.log(err);

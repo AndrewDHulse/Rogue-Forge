@@ -1,39 +1,48 @@
 import { Link } from 'react-router-dom';
 import * as userService from '../../utilities/users-service';
-import './NavBar.css'
+import './NavBar.css';
+import { Navbar, Nav, Container } from 'react-bootstrap';
+
 export default function NavBar({ user, setUser }) {
     function handleLogOut() {
-    userService.logOut();
-    setUser(null);
+        userService.logOut();
+        setUser(null);
     }
 
-    if (user) {
-        return (
-        <nav>
-            <Link to= "/" className='brand'>RF</Link>
-            &nbsp;&nbsp;
-            <Link to="/sessions/new">New Campaign</Link>
-            &nbsp;&nbsp;
-            <Link to="/sessions/table">Table</Link>
-            &nbsp;&nbsp;
-            <Link to="/sessions/index">All Campaigns</Link>
-            &nbsp;&nbsp;
-            <span>Welcome, {user.name}</span>
-            &nbsp;&nbsp;<Link to="" onClick={handleLogOut}>Log Out</Link>
-        </nav>
-        );
-    } else {
-        
-        return (
-            <nav>
-            <Link to= "/">RF</Link>
-            &nbsp;&nbsp;
-            <Link to="/sessions/table">board</Link>
-            &nbsp;&nbsp;
-            <Link to="/auth">Log In or signup</Link>
-            &nbsp;&nbsp;
-            <span>Welcome, adventurer</span>
-        </nav>
-        );
-    }
+return (
+<Navbar bg="dark" variant="dark" expand="sm" className="flex-column">
+    <Container className="d-flex flex-column">
+    <Navbar.Brand as={Link} to="/" className="brand"></Navbar.Brand>
+    <Nav className="flex-column">
+        {user ? (
+        <>
+            <span className='welcome-user'>Welcome, {user.name}</span>
+            <Nav.Link as={Link} to="/sessions/new">
+            New Campaign
+            </Nav.Link>
+            <Nav.Link as={Link} to="/sessions/table">
+            Table
+            </Nav.Link>
+            <Nav.Link as={Link} to="/sessions/index">
+            All Campaigns
+            </Nav.Link>
+            <Nav.Link as={Link} to="" onClick={handleLogOut}>
+            Log Out
+            </Nav.Link>
+        </>
+        ) : (
+        <>
+            <span className='welcome-user'>Welcome, adventurer</span>
+            <Nav.Link as={Link} to="/sessions/table">
+            Table
+            </Nav.Link>
+            <Nav.Link as={Link} to="/auth">
+            Log In or signup
+            </Nav.Link>
+        </>
+        )}
+    </Nav>
+    </Container>
+</Navbar>
+);
 }

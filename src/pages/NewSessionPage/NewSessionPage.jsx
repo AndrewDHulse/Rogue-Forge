@@ -61,7 +61,6 @@ export default function NewSessionPage({setSessions}){
         evt.preventDefault();
         try{
             await createSession(sessionData);
-            console.log('session creation successful')
             const fetchedSessions = await getAllSessions();
             setSessions(fetchedSessions)
             navigate('/sessions/index');

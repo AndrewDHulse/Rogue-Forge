@@ -7,7 +7,6 @@ import { Card } from 'react-bootstrap';
 import './SessionIndex.css';
 
 export default function SessionIndex({ sessions, setSessions, user }) {
-    console.log('sessions passed to sessionindex', sessions);
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -30,9 +29,7 @@ export default function SessionIndex({ sessions, setSessions, user }) {
 
     async function handleDelete(sessionId) {
         try {
-            console.log('Deleting session with ID:', sessionId);
             const response = await deleteSession(sessionId);
-            console.log('Delete response:', response);
             const fetchedSessions = await getAllSessions();
             setSessions(fetchedSessions);
         } catch (error) {

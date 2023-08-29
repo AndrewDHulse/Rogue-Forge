@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import { getUser } from '../../utilities/users-service';
@@ -10,7 +10,8 @@ import NewSessionPage from '../../pages/NewSessionPage/NewSessionPage';
 import SessionIndex from '../../pages/SessionIndex/SessionIndex';
 import SessionDetailPage from '../SessionDetailPage/SessionDetailPage';
 import HomePage from '../../pages/HomePage/Homepage';
-import { Container } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap';
+
 export default function App() {
   const [user, setUser] = useState(getUser());
   const [sessions, setSessions] = useState([]);
@@ -19,7 +20,6 @@ export default function App() {
     async function fetchSessions() {
       try {
         const fetchedSessions = await getAllSessions();
-        console.log('fetched sessions', fetchedSessions);
         setSessions(fetchedSessions);
       } catch (err) {
         console.log('error while fetching sessions', err);
@@ -29,10 +29,14 @@ export default function App() {
   }, []);
 
   return (
-    <Container style={{ backgroundColor: 'rgb(36, 34, 34)' }}>
-    <main className="App">
-      <NavBar user={user} setUser={setUser} />
-      <Routes>
+    <Container fluid>
+      <Row>
+        <Col xs={3} className="p-0">
+          <NavBar user={user} setUser={setUser} />
+        </Col>
+        <Col xs={9} className="p-3">
+          <main className="App">
+            <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/auth" element={<AuthPage setUser={setUser} />} />
         <Route path="/sessions/table" element={<SessionTable user={user} />} />
@@ -44,8 +48,10 @@ export default function App() {
             <Route path="/*" element={<Navigate to="/homepage" />} />
           </>
         )}
-      </Routes>
-    </main>
-  </Container>
+  </Routes>
+          </main>
+        </Col>
+      </Row>
+    </Container>
   );
 }

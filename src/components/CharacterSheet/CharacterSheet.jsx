@@ -17,7 +17,6 @@ export default function CharacterSheet({ user, characterSheet, onDeleteCharacter
     };
 
     useEffect(() => {
-        console.log('characterSheet prop:', characterSheet);
         if (characterSheet && characterSheet.template) {
             setTemplate(characterSheet.template);
         }
@@ -27,23 +26,19 @@ export default function CharacterSheet({ user, characterSheet, onDeleteCharacter
         async function fetchFieldData() {
             try {
                 if (!characterSheet || !characterSheet.values) {
-                    console.log('characterSheet or values null/undefined');
                     return;
                 }
                 const fieldPromises = characterSheet.values.map(async (valueObj) => {
                     const { field, value } = valueObj;
                     const fieldResponse = await getField(valueObj.field);
-        
                     return {
                         field,
                         value,
                         fieldData: fieldResponse,
                     };
                 });
-        
                 const resolvedFieldData = await Promise.all(fieldPromises);
                 setFieldData(resolvedFieldData);
-                console.log('resolved field data:', resolvedFieldData)
             } catch (err) {
                 console.log('Error fetching field data', err);
             }
@@ -57,8 +52,6 @@ export default function CharacterSheet({ user, characterSheet, onDeleteCharacter
     
     const handleUpdateCharacterSheet = async () => {
         try {
-            console.log('Updating character sheet with ID:', characterSheet._id);
-    
             const updatedValues = fieldData.map(fieldInfo => ({
                 field: fieldInfo.fieldData._id,
                 value: fieldInfo.value,
@@ -67,12 +60,9 @@ export default function CharacterSheet({ user, characterSheet, onDeleteCharacter
             const updatedCharacterSheet = {
                 values: updatedValues,
             };
-    
-            console.log('Updated character sheet data:', updatedCharacterSheet);
-    
             const response = await updateCharacterSheet(characterSheet._id, updatedCharacterSheet);
             setCharacterSheets(updatedCharacterSheets);
-            console.log('Update Response:', response);
+            
         } catch (err) {
             console.log('Error updating character sheet', err);
         }
@@ -103,7 +93,6 @@ export default function CharacterSheet({ user, characterSheet, onDeleteCharacter
                 {fieldData.map((fieldInfo) => {
                     const { field, value, fieldData } = fieldInfo;
                     const fieldType = fieldData.type;
-                    console.log(fieldData.label)
                     return (
                         <li key={field._id}>
                             <hr/>
