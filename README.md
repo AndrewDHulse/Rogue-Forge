@@ -10,9 +10,6 @@ A web application for managing character sheets for tabletop role-playing games 
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
 - [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
 
 ## Technologies Used
 
@@ -46,8 +43,8 @@ Click <a href=https://rogueforge-2c9bd98b583a.herokuapp.com>this link</a> to see
 1. Clone the repository:
 
    ```
-   git clone https://github.com/your-username/character-sheet-manager.git
-   cd character-sheet-manager
+   git clone https://github.com/AndrewDHulse/Rogue-Forge.git
+   cd Rogue-Forge
    ```
 2. Set up environment variables:
     Create a .env file in the root directory and add the following:
