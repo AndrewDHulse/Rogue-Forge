@@ -12,11 +12,7 @@ export default function CharacterSheetTemplateForm({ sessionId, onClose, onSubmi
     const [fields, setFields] = useState([]);
     const [templateName, setTemplateName] = useState('');
 
-    const handleTemplateNameChange = (evt) => {
-        setTemplateName(evt.target.value);
-    };
-
-    const handleAddField = () => {
+    const handleAddField=()=>{
         setFields([
             ...fields, 
             {label: '', type: 'text', dropdownOptionsArray: []}
@@ -28,12 +24,11 @@ export default function CharacterSheetTemplateForm({ sessionId, onClose, onSubmi
         const updatedFields = [...fields];
     
         if (updatedField.type === "dropdown") {
+            const dropdownOptionsArray = updatedField.dropdownOptionsArray.map(option => option.value).join(', ');
             updatedFields[index] = {
                 ...updatedField,
-                dropdownOptionsArray: updatedField.dropdownOptionsArray.map(option => ({
-                    ...option,
-                    value: option.value.trim() // Trim the value when updating
-                })),
+                dropdownOptions: dropdownOptionsArray,
+                dropdownOptionsArray: updatedField.dropdownOptionsArray,
             };
         } else {
             updatedFields[index] = updatedField;
@@ -41,6 +36,10 @@ export default function CharacterSheetTemplateForm({ sessionId, onClose, onSubmi
     
         setFields(updatedFields);
         console.log('Fields after updating:', fields);
+    };
+
+    const handleTemplateNameChange = (evt) => {
+        setTemplateName(evt.target.value);
     };
 
     const handleSubmit = async (evt) =>{
@@ -55,6 +54,24 @@ export default function CharacterSheetTemplateForm({ sessionId, onClose, onSubmi
         }catch(err){
             console.log(err)
         }
+    };
+
+    const handleDropdownOptionChange = (index, optionIndex, value) => {
+        const updatedFields = [...fields];
+        updatedFields[index].dropdownOptionsArray[optionIndex].label = value;
+        setFields(updatedFields);
+    };
+    
+    const handleRemoveDropdownOption = (index, optionIndex) => {
+        const updatedFields = [...fields];
+        updatedFields[index].dropdownOptionsArray.splice(optionIndex, 1);
+        setFields(updatedFields);
+    };
+    
+    const handleAddDropdownOption = (index) => {
+        const updatedFields = [...fields];
+        updatedFields[index].dropdownOptionsArray.push({ label: '', value: '' });
+        setFields(updatedFields);
     };
 
     return(
@@ -77,6 +94,9 @@ export default function CharacterSheetTemplateForm({ sessionId, onClose, onSubmi
                         index={index}
                         field={field}
                         onChange={handleFieldChange}
+                        handleDropdownOptionChange ={handleDropdownOptionChange}
+                        handleRemoveDropdownOption={handleRemoveDropdownOption}
+                        handleAddDropdownOption={handleAddDropdownOption}
                     />
                     </div>
                 ))}
@@ -97,24 +117,24 @@ export default function CharacterSheetTemplateForm({ sessionId, onClose, onSubmi
                         {field.type === "text" && <TextField label={field.label} />}
                         {field.type === "dropdown" && (
                             <select
-                            id={field._id}
-                            name={field.label}
-                            value={field.dropdownValue}
-                            onChange={(e) => {
-                                const updatedFields = [...fields];
-                                updatedFields[index].dropdownValue = e.target.value; // Update the field's dropdown value
-                                setFields(updatedFields);
-                            }}
-                        >
-                            {field.dropdownOptionsArray.map((option) => (
-                                <option
-                                    key={option.value}
-                                    value={option.value}
-                                >
-                                    {option.label}
-                                </option>
-                            ))}
-                        </select>
+                                id={field._id}
+                                name={field.label}
+                                value={field.dropdownValue} 
+                                onChange={(e) => {
+                                    const updatedFields = [...fields];
+                                    updatedFields[index].dropdownValue = e.target.value; 
+                                    setFields(updatedFields);
+                                }}
+                            >
+                                {field.dropdownOptionsArray.map((option) => (
+                                    <option
+                                        key={option.value}
+                                        value={option.value}
+                                    >
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
                         )}
                     </div>
                 ))}

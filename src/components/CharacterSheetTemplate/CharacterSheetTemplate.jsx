@@ -8,11 +8,13 @@ export default function CharacterSheetTemplate({
     handleChange,
     sessionId={sessionId},
     onClose,
-    onDeleteTemplate
+    onDeleteTemplate,
+    dropdownOptionsArray
 }) {
     console.log('Template', template)
     console.log('Template Fields:')
     console.log('formdata', formData)
+    console.log('Dropdown Options Array:', dropdownOptionsArray);
     const handleDeleteTemplate = async () => {
         try{
             onDeleteTemplate()
@@ -22,7 +24,6 @@ export default function CharacterSheetTemplate({
             console.log('error deleting template', err)
         }
     };
-
     return (
         <div key={template._id}>
             <h3>{template.templateName}</h3>
@@ -68,23 +69,23 @@ export default function CharacterSheetTemplate({
                             onChange={handleChange}
                             />
                         )}
-                        {field.type === "dropdown" && (
-                            <select
-                                id={field._id}
-                                name={field.label}
-                                value={formData[field.label]}
-                                onChange={handleChange}
-                            >
-                                {field.options.map((option) => (
-                                    <option
-                                        key={option.value}
-                                        value={option.value}
-                                    >
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
-                        )}
+{field.type === "dropdown" && field.options && (
+  <select
+    id={field._id}
+    name={field.label}
+    value={formData[field.label]}
+    onChange={handleChange}
+  >
+    {field.options.map((option) => ( // Use field.options instead of field.dropdownOptionsArray
+      <option
+        key={option.value}
+        value={option.value}
+      >
+        {option.label}
+      </option>
+    ))}
+  </select>
+)}
                     </div>
                 ))}
                 <Button type="submit" variant="secondary" >Create Character Sheet</Button>

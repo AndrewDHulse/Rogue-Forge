@@ -249,41 +249,41 @@ export default function SessionDetailPage({ user, sessions }) {
                         <p>Loading templates...</p>
                     </Tab>
                     ) : (
-                    templates.map((template, index) => (
-                        <Tab
-                        eventKey={index}
-                        title={template.templateName}
-                        key={template._id}
-                        >
-                            <ErrorBoundary>
-                    <CharacterSheetTemplate
-                        onClose={handleCloseShowTemplate}
-                        onDeleteTemplate={() => handleDeleteTemplate(template._id)}
-                        template={{
-                            ...template,
-                            fields: (template.fields || []).map(field => {
-                                if (field.dropdownOptionsArray) {
-                                    return {
-                                        ...field,
-                                        dropdownOptionsArray: (field.dropdownOptionsArray || []).map(option => ({
-                                            ...option,
-                                            label: option.label.trim(),
-                                            value: option.value.trim()
-                                        }))
-                                    };
-                                } else {
-                                    return field;
-                                }
-                            })
-                        }}
-                        handleCreateCharacterSheet={() => handleCreateCharacterSheet(template)}
-                        formData={formData}
-                        handleChange={handleChange}
-                        sessionId={sessionId}
-                    />
-                        </ErrorBoundary>
-                        </Tab>
-                    ))
+                        templates.map((template, index) => (
+                            <Tab
+                                eventKey={index}
+                                title={template.templateName}
+                                key={template._id}
+                            >
+                                <ErrorBoundary>
+                                    <CharacterSheetTemplate
+                                        onClose={handleCloseShowTemplate}
+                                        onDeleteTemplate={() => handleDeleteTemplate(template._id)}
+                                        template={{
+                                            ...template,
+                                            fields: (template.fields || []).map(field => {
+                                                if (field.dropdownOptionsArray) {
+                                                    return {
+                                                        ...field,
+                                                        dropdownOptionsArray: (field.dropdownOptionsArray || []).map(option => ({
+                                                            ...option,
+                                                            label: option.label.trim(),
+                                                            value: option.value.trim()
+                                                        }))
+                                                    };
+                                                } else {
+                                                    return field;
+                                                }
+                                            })
+                                        }}
+                                        handleCreateCharacterSheet={() => handleCreateCharacterSheet(template)}
+                                        formData={formData}
+                                        handleChange={handleChange}
+                                        sessionId={sessionId}
+                                    />
+                                </ErrorBoundary>
+                            </Tab>
+                        ))
                     )}
                 </Tabs>
                 </Modal.Body>
