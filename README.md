@@ -153,3 +153,4 @@ Features planned to be added at a later time include:
 
 - Currently, when creating a character, selecting from the dropdown menu or checking the checkbox does not save, and the user must update these values from the edit function.
 - The label for dropdown fields does not render in the preview. 
+- Character Sheets viewable from all campaigns 
